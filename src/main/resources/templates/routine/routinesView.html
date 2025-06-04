@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GraFit - Rutinas</title>
+  <link rel="icon" type="image/png" th:href="@{/images/GraFitLogo_bgBlack.png}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" th:href="@{/css/routines.css}" />
+</head>
+
+<body>
+  <div class="content">
+    <!-- Navbar con logo centrado -->
+    <nav class="navbar navbar-dark bg-black">
+      <div class="container-fluid d-flex justify-content-between align-items-center">
+        <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu"
+          aria-controls="offcanvasMenu">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <span class="navbar-brand mx-auto h4 mb-0">RUTINAS</span>
+        <form th:action="@{/logout}" method="post">
+          <button type="submit" class="btn btn-outline-danger">
+            <i class="bi bi-box-arrow-left"></i>
+          </button>
+        </form>
+      </div>
+    </nav>
+
+    <!-- Offcanvas menu -->
+    <div class="offcanvas offcanvas-start bg-black" tabindex="-1" id="offcanvasMenu"
+      aria-labelledby="offcanvasMenuLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title text-white" id="offcanvasMenuLabel">GraFit</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+          aria-label="Cerrar"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="nav flex-column">
+          <li class="nav-item mb-2">
+            <a class="nav-link text-white" th:href="@{/home}">
+              <i class="bi bi-house-fill me-2"></i>Inicio
+            </a>
+          </li>
+          <li class="nav-item mb-2">
+            <a class="nav-link text-white" th:href="@{/profile}">
+              <i class="bi bi-person-fill me-2"></i>Datos del Atleta
+            </a>
+          </li>
+          <li class="nav-item mt-3 mb-1">
+            <h6 class="text-danger text-uppercase fw-bold small">
+              <i class="bi bi-lightning-fill me-2"></i>Ejercicios
+            </h6>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ps-3 text-white" th:href="@{/exercises}">
+              <i class="bi bi-plus-circle me-2"></i>Crear y Mostrar Ejercicios
+            </a>
+          </li>
+          <li class="nav-item mt-3 mb-1">
+            <h6 class="text-danger text-uppercase fw-bold small">
+              <i class="bi bi-calendar-check-fill me-2"></i>Rutinas
+            </h6>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ps-3 text-white active" th:href="@{/routines}">
+              <i class="bi bi-plus-circle me-2"></i>Crear y Mostrar Rutinas
+            </a>
+          </li>
+          <li class="nav-item mt-3 mb-1">
+            <h6 class="text-danger text-uppercase fw-bold small">
+              <i class="bi bi-graph-up me-2"></i>Estadísticas
+            </h6>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ps-3 text-white" th:href="@{/statistics}">
+              <i class="bi bi-book-fill me-2"></i>Ver Progreso
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ps-3 text-white active" th:href="@{/statistics/summary}">
+              <i class="bi bi-book-fill me-2"></i>Resumen
+            </a>
+          </li>
+          <li class="nav-item mt-3 mb-1">
+            <h6 class="text-danger text-uppercase fw-bold small">
+              <i class="bi bi-book-fill me-2"></i>Aprender
+            </h6>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ps-3 text-white" data-bs-toggle="collapse" href="#collapseAprender">
+              <i class="bi bi-plus-circle me-2"></i>Tutoriales
+            </a>
+            <div class="collapse ms-3" id="collapseAprender">
+              <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a class="nav-link text-white" th:href="@{/tutorials/press-banca}">
+                    <i class="bi bi-arrow-right me-2"></i>Press Banca
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-white" th:href="@{/tutorials/peso-muerto}">
+                    <i class="bi bi-arrow-right me-2"></i>Peso Muerto
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-white" th:href="@{/tutorials/sentadilla}">
+                    <i class="bi bi-arrow-right me-2"></i>Sentadilla
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-white" th:href="@{/tutorials/custom}">
+                    <i class="bi bi-arrow-right me-2"></i>Personalizado
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container-fluid mt-4">
+      <div class="row g-4">
+        <!-- Formulario de creación de rutinas -->
+        <section class="col-12 mb-5">
+          <div th:if="${errorMessage}" class="alert alert-danger text-center" role="alert">
+            <p th:text="${errorMessage}"></p>
+          </div>
+          <div th:if="${successMessage}" class="alert alert-success text-center" role="alert">
+            <p th:text="${successMessage}"></p>
+          </div>
+
+          <form th:action="@{/routines}" th:object="${routine}" method="post" class="needs-validation" novalidate>
+            <input type="hidden" th:field="*{idRoutine}" />
+
+            <div class="mb-4">
+              <label for="name" class="form-label">Nombre *</label>
+              <div class="input-group has-validation">
+                <span class="input-group-text"><i class="bi bi-card-heading"></i></span>
+                <input type="text" th:field="*{name}" class="form-control text-uppercase" id="name" required />
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label for="description" class="form-label">Descripción</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-text-paragraph"></i></span>
+                <input type="text" th:field="*{description}" class="form-control text-uppercase" id="description" />
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-5">
+              <label for="dayOfWeek" class="form-label">Día de la semana *</label>
+              <select class="form-select" id="dayOfWeek" th:field="*{dayOfWeek}" required>
+                <option value="LUNES">Lunes</option>
+                <option value="MARTES">Martes</option>
+                <option value="MIÉRCOLES">Miércoles</option>
+                <option value="JUEVES">Jueves</option>
+                <option value="VIERNES">Viernes</option>
+                <option value="SÁBADO">Sábado</option>
+                <option value="DOMINGO">Domingo</option>
+              </select>
+              <div class="invalid-feedback" th:if="${#fields.hasErrors('dayOfWeek')}" th:errors="*{dayOfWeek}"></div>
+            </div>
+
+            <div class="d-grid gap-2">
+              <button th:if="${routine.idRoutine == null}" type="submit" class="btn btn-danger btn-lg shadow-sm">
+                Crear
+              </button>
+              <div th:if="${routine.idRoutine != null}" class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger btn-lg shadow-sm" title="Guardar">
+                  Guardar
+                </button>
+                <a href="/routines" class="btn btn-dark btn-lg shadow-sm" title="Cancelar">
+                  Cancelar
+                </a>
+              </div>
+            </div>
+          </form>
+        </section>
+
+        <!-- Tabla de rutinas -->
+        <section class="col-12 mx-auto mb-5">
+          <div class="card shadow-sm p-4 h-100">
+            <div th:if="${routines.isEmpty()}" class="text-center text-muted mb-3">
+              <p>No tienes rutinas creadas aún.</p>
+            </div>
+
+            <div th:if="${!routines.isEmpty()}">
+              <div class="table-responsive">
+                <table id="routinesTable" class="table table-hover table-sm align-middle mb-0">
+                  <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>Descripción</th>
+                      <th data-day-sort>Día <i class="bi bi-arrow-down-up"></i></th>
+                      <th>Creación</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="r : ${routines}" style="border-bottom: 1px solid #f1f1f1;">
+                      <td th:text="${r.name}"></td>
+                      <td th:text="${r.description ?: '-'}"></td>
+                      <td th:text="${r.dayOfWeek}"></td>
+                      <td th:text="${r.creationDate != null 
+                           ? #temporals.format(r.creationDate, 'dd/MM/yyyy') 
+                           : '-'}"></td>
+                      <td class="d-flex gap-1">
+                        <a th:href="@{/routines(edit=${r.idRoutine})}" class="btn btn-sm btn-outline-danger me-1">
+                          <i class="bi bi-pencil-fill"></i>
+                        </a>
+                        <form th:action="@{/routines/{id}/delete(id=${r.idRoutine})}" method="post" class="d-inline"
+                          onsubmit="return confirm('¿Eliminar rutina?');">
+                          <button type="submit" class="btn btn-sm btn-outline-danger me-1" title="Eliminar">
+                            <i class="bi bi-trash-fill"></i>
+                          </button>
+                        </form>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Ejercicios en la rutina -->
+        <section class="col-12" th:if="${routine != null && routine.idRoutine != null && routine.trainings != null}">
+          <!-- Tabla de ejercicios actuales -->
+          <div class="card shadow-sm p-4 mb-4">
+            <h2 class="h4 text-center mb-4 text-danger">
+              <span th:text="${routine.name != null ? routine.name : 'Rutina'}"></span>
+            </h2>
+
+            <div th:if="${routine.trainings != null && !routine.trainings.isEmpty()}" class="mb-4">
+              <h3 class="h5 mb-3">Ejercicios actuales</h3>
+              <div class="table-responsive">
+                <table class="table table-sm">
+                  <thead>
+                    <tr>
+                      <th>Ejercicio</th>
+                      <th>Nº de Serie</th>
+                      <th>Repeticiones</th>
+                      <th>Peso (kg)</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <th:block th:each="training : ${routine.trainings}">
+                      <!-- Primera fila del ejercicio -->
+                      <tr>
+                        <td th:rowspan="${training.setConfigurations.size()}"
+                          th:text="${training.exercise != null ? training.exercise.name : 'N/A'}"></td>
+                        <td th:text="${'Serie ' + training.setConfigurations[0].setNumber}"></td>
+                        <td th:text="${training.setConfigurations[0].repetitions}"></td>
+                        <td th:text="${training.setConfigurations[0].weight}"></td>
+                        <td th:rowspan="${training.setConfigurations.size()}">
+                          <a th:href="@{/routines/{routineId}/exercises/{trainingId}/edit(routineId=${routine.idRoutine}, trainingId=${training.idTraining})}"
+                            class="btn btn-sm btn-outline-danger">
+                            <i class="bi bi-pencil-fill"></i>
+                          </a>
+                          <form
+                            th:action="@{/routines/{routineId}/exercises/{trainingId}/delete(routineId=${routine.idRoutine}, trainingId=${training.idTraining})}"
+                            method="post" class="d-inline"
+                            onsubmit="return confirm('¿Eliminar este ejercicio de la rutina?');">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                              <i class="bi bi-trash-fill"></i>
+                            </button>
+                          </form>
+                        </td>
+                      </tr>
+                      <!-- Filas adicionales para los sets restantes -->
+                      <tr th:each="setConfig, iterStat : ${training.setConfigurations}" th:if="${iterStat.index > 0}"
+                        class="border-top-0">
+                        <td th:text="${'Serie ' + setConfig.setNumber}"></td>
+                        <td th:text="${setConfig.repetitions}"></td>
+                        <td th:text="${setConfig.weight}"></td>
+                      </tr>
+                    </th:block>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Formulario para agregar ejercicios -->
+          <div class="card shadow-sm p-4">
+            <h3 class="h5 mb-4">Agregar nuevo ejercicio</h3>
+            <form th:action="@{/routines/{idRoutine}/exercises/add(idRoutine=${routine.idRoutine})}" method="post"
+              class="row g-3 needs-validation" novalidate>
+
+              <div class="col-md-6">
+                <label for="exerciseSelect" class="form-label">Ejercicio *</label>
+                <select id="exerciseSelect" name="exerciseId" class="form-select" required>
+                  <option value="" selected disabled>Seleccione un ejercicio</option>
+                  <option th:each="ex : ${exercises}" th:value="${ex.idExercise}" th:text="${ex.name}"
+                    th:selected="${lastExerciseId != null && lastExerciseId == ex.idExercise}">
+                  </option>
+                </select>
+                <div class="invalid-feedback">Seleccione un ejercicio válido.</div>
+              </div>
+
+              <div class="col-md-2">
+                <label for="setsInput" class="form-label">Nº de series *</label>
+                <select id="setsInput" name="numberOfSets" class="form-select" required
+                  onchange="updateSetInputs(this.value)">
+                  <option value="" selected disabled>Series</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                </select>
+                <div class="invalid-feedback">Seleccione el número de series.</div>
+              </div>
+
+              <div id="setDetails" class="col-12 mt-3">
+                <!-- Aquí se generarán dinámicamente los campos para cada serie -->
+              </div>
+
+              <div class="col-12">
+                <button type="submit" class="btn btn-danger btn-lg shadow-sm mt-3">Agregar Ejercicio</button>
+                <a href="/exercises" class="btn btn-danger btn-lg shadow-sm mt-3">
+                  <i class="bi bi-plus-circle me-2"></i>Crear Nuevo Ejercicio
+                </a>
+              </div>
+            </form>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script th:src="@{/js/routinesView.js}"></script>
+</body>
+
+</html>

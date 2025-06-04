@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GraFit - Resumen de Rutinas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link th:href="@{/css/summary.css}" rel="stylesheet">
+    <style>
+        .routine-card {
+            border: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+        }
+        .routine-header {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #dc3545;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            position: relative;
+            padding: 1rem;
+        }
+        .routine-header:hover {
+            background-color: #f0f0f0;
+        }
+        .routine-header:after {
+            content: "\F282";
+            font-family: "bootstrap-icons";
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.2s;
+            color: #6c757d;
+        }
+        .routine-header.collapsed:after {
+            transform: translateY(-50%) rotate(-90deg);
+        }
+        .routine-content {
+            transition: all 0.2s;
+        }
+        .routine-content.collapsed {
+            display: none;
+        }
+        .exercise-card {
+            border-left: 4px solid #dc3545;
+            margin: 1rem 0;
+            background-color: #fff;
+        }
+        .set-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .set-card:hover {
+            background-color: #f0f0f0;
+        }
+        .set-card .d-flex {
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .set-number {
+            color: #dc3545;
+            font-weight: 600;
+            min-width: 60px;
+        }
+        .set-details {
+            color: #6c757d;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 0.5rem;
+            align-items: center;
+            width: 100%;
+        }
+        .set-cell {
+            padding: 0.25rem;
+            background-color: white;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .set-cell-label {
+            font-size: 0.75rem;
+            color: #6c757d;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+        .set-cell-value {
+            font-weight: 500;
+            color: #212529;
+        }
+        .muscle-group {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+        .exercise-name {
+            font-weight: 600;
+            color: #212529;
+        }
+        .routine-date {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        .set-note {
+            display: none;
+            background-color: white;
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            border-left: 3px solid #dc3545;
+        }
+        .set-note.show {
+            display: block;
+        }
+        .set-card.has-note {
+            position: relative;
+        }
+        .set-card.has-note:after {
+            content: "";
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #dc3545;
+        }
+        @media (max-width: 768px) {
+            .set-details {
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            }
+            .set-cell {
+                padding: 0.25rem;
+                font-size: 0.9rem;
+            }
+            .set-cell-label {
+                font-size: 0.7rem;
+            }
+            .routine-header {
+                padding: 0.75rem;
+            }
+            .routine-date {
+                font-size: 1rem;
+            }
+            .container {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+        }
+        @media (max-width: 576px) {
+            .set-details {
+                grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+            }
+            .set-cell {
+                font-size: 0.85rem;
+            }
+            .set-number {
+                min-width: 50px;
+            }
+            .routine-date {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark bg-black">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu"
+                aria-controls="offcanvasMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <span class="navbar-brand mx-auto h4 mb-0">RESUMEN DE RUTINAS</span>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="btn btn-outline-danger">
+                    <i class="bi bi-box-arrow-left"></i>
+                </button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- Offcanvas menu -->
+    <div class="offcanvas offcanvas-start bg-black" tabindex="-1" id="offcanvasMenu"
+        aria-labelledby="offcanvasMenuLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title text-white" id="offcanvasMenuLabel">GraFit</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                aria-label="Cerrar"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="nav flex-column">
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-white" th:href="@{/home}">
+                        <i class="bi bi-house-fill me-2"></i>Inicio
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-white" th:href="@{/profile}">
+                        <i class="bi bi-person-fill me-2"></i>Datos del Atleta
+                    </a>
+                </li>
+                <li class="nav-item mt-3 mb-1">
+                    <h6 class="text-danger text-uppercase fw-bold small">
+                        <i class="bi bi-lightning-fill me-2"></i>Ejercicios
+                    </h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ps-3 text-white" th:href="@{/exercises}">
+                        <i class="bi bi-plus-circle me-2"></i>Crear y Mostrar Ejercicios
+                    </a>
+                </li>
+                <li class="nav-item mt-3 mb-1">
+                    <h6 class="text-danger text-uppercase fw-bold small">
+                        <i class="bi bi-calendar-check-fill me-2"></i>Rutinas
+                    </h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ps-3 text-white" th:href="@{/routines}">
+                        <i class="bi bi-plus-circle me-2"></i>Crear y Mostrar Rutinas
+                    </a>
+                </li>
+                <li class="nav-item mt-3 mb-1">
+                    <h6 class="text-danger text-uppercase fw-bold small">
+                        <i class="bi bi-graph-up me-2"></i>Estadísticas
+                    </h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ps-3 text-white" th:href="@{/statistics}">
+                        <i class="bi bi-book-fill me-2"></i>Ver Progreso
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ps-3 text-white active" th:href="@{/statistics/summary}">
+                        <i class="bi bi-book-fill me-2"></i>Resumen
+                    </a>
+                </li>
+                <li class="nav-item mt-3 mb-1">
+                    <h6 class="text-danger text-uppercase fw-bold small">
+                        <i class="bi bi-book-fill me-2"></i>Aprender
+                    </h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ps-3 text-white" data-bs-toggle="collapse" href="#collapseAprender">
+                        <i class="bi bi-plus-circle me-2"></i>Tutoriales
+                    </a>
+                    <div class="collapse ms-3" id="collapseAprender">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link text-white" th:href="@{/tutorials/press-banca}">
+                                    <i class="bi bi-arrow-right me-2"></i>Press Banca
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" th:href="@{/tutorials/peso-muerto}">
+                                    <i class="bi bi-arrow-right me-2"></i>Peso Muerto
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" th:href="@{/tutorials/sentadilla}">
+                                    <i class="bi bi-arrow-right me-2"></i>Sentadilla
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" th:href="@{/tutorials/custom}">
+                                    <i class="bi bi-arrow-right me-2"></i>Personalizado
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="container mt-4">
+        <!-- Filtros -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <form th:action="@{/statistics/summary}" method="get" class="row gy-2">
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <label for="startDate" class="form-label">Fecha Inicio</label>
+                        <input type="date" class="form-control" id="startDate" name="startDate" th:value="${startDate}">
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <label for="endDate" class="form-label">Fecha Fin</label>
+                        <input type="date" class="form-control" id="endDate" name="endDate" th:value="${endDate}">
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <label for="dayOfWeek" class="form-label">Día de la Semana</label>
+                        <select class="form-select" id="dayOfWeek" name="dayOfWeek">
+                            <option value="">Todos los días</option>
+                            <option value="MONDAY" th:selected="${dayOfWeek == 'MONDAY'}">Lunes</option>
+                            <option value="TUESDAY" th:selected="${dayOfWeek == 'TUESDAY'}">Martes</option>
+                            <option value="WEDNESDAY" th:selected="${dayOfWeek == 'WEDNESDAY'}">Miércoles</option>
+                            <option value="THURSDAY" th:selected="${dayOfWeek == 'THURSDAY'}">Jueves</option>
+                            <option value="FRIDAY" th:selected="${dayOfWeek == 'FRIDAY'}">Viernes</option>
+                            <option value="SATURDAY" th:selected="${dayOfWeek == 'SATURDAY'}">Sábado</option>
+                            <option value="SUNDAY" th:selected="${dayOfWeek == 'SUNDAY'}">Domingo</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-3 d-flex align-items-end gap-2">
+                        <button type="submit" class="btn btn-danger w-100">
+                            <i class="bi bi-search me-2"></i>Filtrar
+                        </button>
+                        <a th:href="@{/statistics/summary}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-counterclockwise"></i>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Mensaje si no hay rutinas -->
+        <div th:if="${#lists.isEmpty(completedRoutines)}" class="alert alert-info" role="alert">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            No hay rutinas completadas en el período seleccionado.
+        </div>
+
+        <!-- Lista de rutinas completadas -->
+        <div th:if="${not #lists.isEmpty(completedRoutines)}" class="routines-list">
+            <div th:each="routine, routineStat : ${completedRoutines}" class="card routine-card">
+                <div class="routine-header" onclick="toggleRoutine(this)">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="routine-date" th:text="${#temporals.format(routine.completionDate, 'dd/MM/yyyy')}">01/01/2024</span>
+                            <span class="badge bg-danger ms-2" th:text="${routine.name}">Nombre Rutina</span>
+                        </div>
+                        <small class="text-muted" th:text="${routine.dayOfWeek}">Lunes</small>
+                    </div>
+                </div>
+                <div class="card-body routine-content">
+                    <div th:each="training : ${routine.trainings}" class="exercise-card p-3">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <div class="exercise-name" th:text="${training.exercise.name}">Nombre Ejercicio</div>
+                                <div class="muscle-group" th:text="${training.exercise.muscleGroup}">Grupo Muscular</div>
+                            </div>
+                        </div>
+                        <div class="sets-container">
+                            <div th:each="set : ${training.completedSets}" 
+                                 th:class="${'set-card' + (set.note != null && !set.note.isEmpty() ? ' has-note' : '')}"
+                                 onclick="toggleNote(this)">
+                                <div class="d-flex align-items-center">
+                                    <span class="set-number" th:text="'Serie ' + ${set.setNumber}">Serie 1</span>
+                                    <div class="set-details flex-grow-1">
+                                        <div class="set-cell">
+                                            <span class="set-cell-label">Repeticiones</span>
+                                            <span class="set-cell-value" th:text="${set.repetitions}">10</span>
+                                        </div>
+                                        <div class="set-cell">
+                                            <span class="set-cell-label">Peso (kg)</span>
+                                            <span class="set-cell-value" th:text="${set.weight}">65.0</span>
+                                        </div>
+                                        <div class="set-cell">
+                                            <span class="set-cell-label">Tiempo</span>
+                                            <div class="set-cell-value">
+                                                <i class="bi bi-clock-fill me-1"></i>
+                                                <span th:text="${set.timerValue}">00:00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div th:if="${set.note}" class="set-note">
+                                    <i class="bi bi-chat-left-text-fill me-1"></i>
+                                    <span th:text="${set.note}">Nota</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/statistics/summary.js}"></script>
+</body>
+
+</html>

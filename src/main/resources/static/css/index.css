@@ -1,0 +1,24 @@
+/* Botón de acceder fijo */
+.btn-acceder-fixed {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1100;
+    height: 56px; /* Altura estándar del navbar de Bootstrap */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1.5rem;
+    border-radius: 0;
+}
+
+/* Para pantallas pequeñas */
+@media (max-width: 768px) {
+    .btn-acceder-fixed {
+        position: static;
+        display: flex;
+        width: 100%;
+        height: auto;
+        padding: 0.5rem 1rem;
+    }
+} 

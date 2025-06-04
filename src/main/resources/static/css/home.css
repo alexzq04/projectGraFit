@@ -1,0 +1,42 @@
+.btn-danger:hover {
+    background-color: #bb2d3b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.2);
+}
+
+.routine-card {
+    border: 1px solid #404040;
+    transition: all 0.3s;
+    border-radius: 8px;
+}
+
+.routine-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.15);
+}
+
+.exercise-list {
+    list-style: none;
+    padding: 0;
+}
+
+.exercise-item {
+    color: white;
+    background-color: #2d2d2d;
+    border-left: 3px solid #dc3545;
+    margin-bottom: 10px;
+    padding: 15px;
+    transition: all 0.3s;
+    border-radius: 0 8px 8px 0;
+}
+
+.timer {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #dc3545;
+}
+
+.set-history {
+    max-height: 200px;
+    overflow-y: auto;
+}

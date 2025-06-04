@@ -1,0 +1,239 @@
+/* Estilos para reducir el tamaño del carousel */
+.carousel-item img {
+    height: 69vh;
+    /* Reducido de 60vh a 45vh */
+    object-fit: cover;
+}
+
+/* Ajustar la posición del caption para el carousel más pequeño */
+.carousel-caption {
+    bottom: 15%;
+    /* Cambiado de 25% a 15% */
+    padding: 15px;
+}
+
+/* Ajustar tamaños de texto dentro del carousel para mejor adaptación */
+.carousel-caption h1 {
+    font-size: 2.2rem;
+}
+
+.carousel-caption .lead {
+    font-size: 1.1rem;
+}
+
+/* Ajustar indicadores y controles */
+.carousel-indicators {
+    bottom: 5px;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 8%;
+}
+
+/* Para pantallas más pequeñas */
+@media (max-width: 768px) {
+    .carousel-item img {
+        height: 35vh;
+    }
+
+    .carousel-caption h1 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Estilos para las tarjetas de ejercicios */
+.exercise-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.exercise-card .exercise-img {
+    height: 200px;
+    object-fit: cover;
+    transition: all 0.5s ease;
+}
+
+.exercise-card:hover .exercise-img {
+    transform: scale(1.05);
+}
+
+.exercise-card:hover {
+    box-shadow: 0 6px 12px rgba(220, 53, 69, 0.2);
+}
+
+.exercise-card .card-body {
+    padding: 1.5rem;
+}
+
+.exercise-card .card-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #dc3545;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.exercise-definition {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.5s ease;
+}
+
+.exercise-definition.show {
+    opacity: 1;
+    max-height: 500px;
+}
+
+.exercise-definition hr {
+    border-color: rgba(220, 53, 69, 0.2);
+    margin: 1rem 0;
+}
+
+.exercise-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stat-item i {
+    font-size: 1.5rem;
+    color: #dc3545;
+}
+
+.stat-item span {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+@media (max-width: 768px) {
+    .exercise-card .exercise-img {
+        height: 180px;
+    }
+
+    .exercise-card .card-body {
+        padding: 1rem;
+    }
+
+    .exercise-card .card-title {
+        font-size: 1.3rem;
+    }
+
+    .stat-item i {
+        font-size: 1.3rem;
+    }
+}
+
+.carousel-caption {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 2rem;
+    text-align: center;
+    width: 100%;
+}
+
+.caption-overlay {
+    position: absolute;
+    top: -100%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7));
+    width: 100%;
+    height: 200%;
+}
+
+.caption-content {
+    position: relative;
+    z-index: 2;
+}
+
+.carousel-caption h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.carousel-caption .lead {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 768px) {
+    .carousel-caption h1 {
+        font-size: 1.75rem;
+    }
+
+    .carousel-caption .lead {
+        font-size: 1rem;
+    }
+}
+
+/* Estilos para el botón de acceder */
+.navbar {
+    padding-right: 0;
+}
+
+.navbar-collapse {
+    justify-content: space-between !important;
+}
+
+.navbar .container {
+    position: relative;
+}
+
+.btn-acceder {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+@media (max-width: 991px) {
+    .btn-acceder {
+        position: static;
+        transform: none;
+        margin-top: 10px;
+    }
+}
+
+/* Botón de acceder fijo */
+.btn-acceder-fixed {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1100;
+    height: 56px; /* Altura estándar del navbar de Bootstrap */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1.5rem;
+    border-radius: 0;
+}
+
+/* Para pantallas pequeñas */
+@media (max-width: 768px) {
+    .btn-acceder-fixed {
+        position: static;
+        display: flex;
+        width: 100%;
+        height: auto;
+        border-radius: 0;
+    }
+}

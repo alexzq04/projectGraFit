@@ -1,0 +1,29 @@
+/* Navbar y Offcanvas */
+.navbar {
+    border-bottom: 1px solid #2d2d2d;
+}
+
+.offcanvas {
+    border-right: 1px solid #2d2d2d;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+.wrapper {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1;
+}
+
+footer {
+    flex-shrink: 0;
+    margin-top: auto;
+}

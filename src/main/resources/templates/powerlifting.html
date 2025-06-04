@@ -1,0 +1,307 @@
+<!-- src/main/resources/templates/powerlifting.html -->
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Introducción al Powerlifting - GraFit</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/powerlifting.css}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/powerlifting.js}" defer></script>
+</head>
+
+<body>
+    <div class="content">
+        <a class="btn btn-danger btn-acceder-fixed text-white fw-bold px-4 rounded-0" th:href="@{/login}">
+            <i class="bi bi-lock-fill me-2"></i>ACCEDER
+        </a>
+        <!-- Navegación -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+            <div class="container">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-custom px-3" th:href="@{/}">
+                                <span class="nav-item-text">INICIO</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-custom active px-3" th:href="@{/powerlifting}">
+                                <span class="nav-item-text">POWERLIFTING</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Sección Hero -->
+        <header>
+            <div id="powerLiftingCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <!-- Sentadilla -->
+                    <div class="carousel-item active">
+                        <div class="position-relative">
+                            <img th:src="@{/images/sentadilla-1.jpg}" class="d-block w-100"
+                                alt="Sentadilla Powerlifting">
+                            <div class="carousel-caption">
+                                <div class="caption-overlay"></div>
+                                <div class="caption-content">
+                                    <h1 class="">Bienvenido al mundo del Powerlifting</h1>
+                                    <p class="lead">Descubre la fuerza, técnica y disciplina detrás de uno de los
+                                        deportes de fuerza más completos</p>
+                                    <a href="#aprende-mas" class="btn btn-danger btn-lg mt-3">Aprende Más</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Press de Banca -->
+                    <div class="carousel-item">
+                        <div class="position-relative">
+                            <img th:src="@{/images/pressbanca-1.jpg}" class="d-block w-100"
+                                alt="Press de Banca Powerlifting">
+                            <div class="carousel-caption">
+                                <div class="caption-overlay"></div>
+                                <div class="caption-content">
+                                    <h1 class="">Bienvenido al mundo del Powerlifting</h1>
+                                    <p class="lead">Descubre la fuerza, técnica y disciplina detrás de uno de los
+                                        deportes de fuerza más completos</p>
+                                    <a href="#aprende-mas" class="btn btn-danger btn-lg mt-3">Aprende Más</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Peso Muerto -->
+                    <div class="carousel-item">
+                        <div class="position-relative">
+                            <img th:src="@{/images/pesomuerto_powerlifting_1.jpg}" class="d-block w-100"
+                                alt="Peso Muerto Powerlifting">
+                            <div class="carousel-caption">
+                                <div class="caption-overlay"></div>
+                                <div class="caption-content">
+                                    <h1 class="">Bienvenido al mundo del Powerlifting</h1>
+                                    <p class="lead">Descubre la fuerza, técnica y disciplina detrás de uno de los
+                                        deportes de fuerza más completos</p>
+                                    <a href="#aprende-mas" class="btn btn-danger btn-lg mt-3">Aprende Más</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#powerLiftingCarousel"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#powerLiftingCarousel"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Sección de Introducción -->
+        <section class="container my-5" id="aprende-mas">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="section-header">¿Qué es el Powerlifting?</h2>
+                    <p class="lead">El powerlifting es un deporte de fuerza que consiste en tres levantamientos básicos:
+                        sentadilla, press de banca y peso muerto. A diferencia del culturismo, el powerlifting se centra
+                        en la fuerza máxima y no en la apariencia física.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Los Tres Grandes Levantamientos -->
+        <section class="container my-5">
+            <h2 class="section-header text-center mb-5">Los Tres Grandes Levantamientos</h2>
+            <div class="row g-4">
+                <!-- Sentadilla -->
+                <div class="col-md-4">
+                    <div class="card exercise-card h-100" onclick="toggleDefinition(this)">
+                        <img th:src="@{/images/index/sentadilla.jpeg}" class="card-img-top exercise-img"
+                            alt="Sentadilla">
+                        <div class="card-body text-center">
+                            <h3 class="card-title mb-3">Sentadilla</h3>
+                            <div class="exercise-definition collapse">
+                                <hr class="my-3">
+                                <p class="text-start mb-3">La sentadilla es un ejercicio donde la barra se coloca sobre
+                                    los trapecios,
+                                    y el atleta debe descender hasta que la articulación de la cadera esté por debajo de
+                                    la rodilla,
+                                    manteniendo una postura erguida, y luego volver a la posición inicial.</p>
+                                <div class="exercise-stats">
+                                    <div class="stat-item">
+                                        <i class="bi bi-bullseye"></i>
+                                        <span>Piernas</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <i class="bi bi-lightning-charge"></i>
+                                        <span>Fuerza</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Press de Banca -->
+                <div class="col-md-4">
+                    <div class="card exercise-card h-100" onclick="toggleDefinition(this)">
+                        <img th:src="@{/images/index/pressBanca.jpg}" class="card-img-top exercise-img"
+                            alt="Press de Banca">
+                        <div class="card-body text-center">
+                            <h3 class="card-title mb-3">Press de Banca</h3>
+                            <div class="exercise-definition collapse">
+                                <hr class="my-3">
+                                <p class="text-start mb-3">El press de banca es un ejercicio donde el atleta se acuesta
+                                    en un banco,
+                                    baja la barra hasta tocar el pecho, y luego la empuja hacia arriba hasta extender
+                                    completamente
+                                    los brazos, manteniendo los glúteos en contacto con el banco.</p>
+                                <div class="exercise-stats">
+                                    <div class="stat-item">
+                                        <i class="bi bi-bullseye"></i>
+                                        <span>Pecho</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <i class="bi bi-lightning-charge"></i>
+                                        <span>Empuje</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Peso Muerto -->
+                <div class="col-md-4">
+                    <div class="card exercise-card h-100" onclick="toggleDefinition(this)">
+                        <img th:src="@{/images/index/pesoMuerto.jpg}" class="card-img-top exercise-img"
+                            alt="Peso Muerto">
+                        <div class="card-body text-center">
+                            <h3 class="card-title mb-3">Peso Muerto</h3>
+                            <div class="exercise-definition collapse">
+                                <hr class="my-3">
+                                <p class="text-start mb-3">El peso muerto consiste en levantar una barra desde el suelo
+                                    hasta la
+                                    altura de la cadera en un solo movimiento, manteniendo la espalda recta y utilizando
+                                    principalmente la fuerza de piernas y espalda.</p>
+                                <div class="exercise-stats">
+                                    <div class="stat-item">
+                                        <i class="bi bi-bullseye"></i>
+                                        <span>Espalda</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <i class="bi bi-lightning-charge"></i>
+                                        <span>Tirón</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cómo Empezar -->
+        <section class="container my-5">
+            <h2 class="section-header text-center mb-5">Cómo Empezar</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="row row-cols-1 row-cols-md-2 g-4">
+                        <!-- Paso 1 -->
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body p-4">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="bg-danger rounded-circle p-3 me-3">
+                                            <i class="bi bi-book text-white fs-4"></i>
+                                        </div>
+                                        <h5 class="card-title mb-0">Aprende la técnica</h5>
+                                    </div>
+                                    <p class="card-text">Antes de añadir peso, domina la forma adecuada de cada
+                                        levantamiento. La técnica correcta es fundamental para prevenir lesiones.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Paso 2 -->
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body p-4">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="bg-danger rounded-circle p-3 me-3">
+                                            <i class="bi bi-bar-chart-steps text-white fs-4"></i>
+                                        </div>
+                                        <h5 class="card-title mb-0">Empieza con pesos ligeros</h5>
+                                    </div>
+                                    <p class="card-text">Desarrolla una base sólida antes de intentar levantar pesos
+                                        máximos. La progresión gradual es clave para el éxito.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Paso 3 -->
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body p-4">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="bg-danger rounded-circle p-3 me-3">
+                                            <i class="bi bi-calendar-check text-white fs-4"></i>
+                                        </div>
+                                        <h5 class="card-title mb-0">Sigue un programa</h5>
+                                    </div>
+                                    <p class="card-text">Estructura tus entrenamientos siguiendo un programa de
+                                        powerlifting diseñado para principiantes. La consistencia es fundamental.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Paso 4 -->
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body p-4">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="bg-danger rounded-circle p-3 me-3">
+                                            <i class="bi bi-arrow-repeat text-white fs-4"></i>
+                                        </div>
+                                        <h5 class="card-title mb-0">Incorpora variaciones</h5>
+                                    </div>
+                                    <p class="card-text">Incluye ejercicios accesorios para fortalecer puntos débiles y
+                                        mejorar tu rendimiento general en los levantamientos principales.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Paso 5 -->
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body p-4">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="bg-danger rounded-circle p-3 me-3">
+                                            <i class="bi bi-battery-charging text-white fs-4"></i>
+                                        </div>
+                                        <h5 class="card-title mb-0">Prioriza la recuperación</h5>
+                                    </div>
+                                    <p class="card-text">Da tiempo a tu cuerpo para recuperarse con una nutrición
+                                        adecuada y suficiente descanso. La recuperación es tan importante como el
+                                        entrenamiento.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <footer class="text-center py-3 text-muted" style="font-size: 0.9rem;">
+        &copy; 2025 ProjectGrafit
+    </footer>
+</body>
+
+</html>
