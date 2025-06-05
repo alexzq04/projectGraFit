@@ -54,7 +54,10 @@ public class StatisticsController {
         
         List<CompletedRoutine> completedRoutines = exerciseHistoryService.getCompletedRoutinesBetweenDates(start, end);
         
+<<<<<<< HEAD
         // Filtrar por día de la semana si se especifica
+=======
+>>>>>>> origin/main
         if (dayOfWeek != null && !dayOfWeek.isEmpty()) {
             completedRoutines = completedRoutines.stream()
                 .filter(routine -> routine.getDayOfWeek().equalsIgnoreCase(dayOfWeek))

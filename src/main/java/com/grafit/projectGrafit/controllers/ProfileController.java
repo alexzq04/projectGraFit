@@ -46,18 +46,29 @@ public class ProfileController {
         }
 
         try {
+<<<<<<< HEAD
             // Obtener el usuario actual para mantener datos sensibles
+=======
+      
+>>>>>>> origin/main
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             User currentUser = userService.findByUsername(auth.getName())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
+<<<<<<< HEAD
             // Mantener datos sensibles que no deben ser modificados desde el formulario
+=======
+>>>>>>> origin/main
             user.setId(currentUser.getId());
             user.setPassword(currentUser.getPassword());
             user.setRole(currentUser.getRole());
             user.setDateOfRegister(currentUser.getDateOfRegister());
 
+<<<<<<< HEAD
             // Validar si el nuevo username o email ya existe
+=======
+        
+>>>>>>> origin/main
             if (!currentUser.getUsername().equals(user.getUsername()) && 
                 userService.existsByUsername(user.getUsername())) {
                 model.addAttribute("errorMessage", "El nombre de usuario ya está en uso.");
@@ -70,7 +81,10 @@ public class ProfileController {
                 return "user/profile";
             }
 
+<<<<<<< HEAD
             // Validar peso y altura
+=======
+>>>>>>> origin/main
             if (user.getWeightKg() <= 0) {
                 model.addAttribute("errorMessage", "El peso debe ser mayor que 0 kg.");
                 return "user/profile";
@@ -81,10 +95,16 @@ public class ProfileController {
                 return "user/profile";
             }
 
+<<<<<<< HEAD
             // Actualizar el usuario con los nuevos datos
             User updatedUser = userService.updateUser(user);
             
             // Actualizar el contexto de seguridad si el nombre de usuario ha cambiado
+=======
+           
+            User updatedUser = userService.updateUser(user);
+            
+>>>>>>> origin/main
             if (!currentUser.getUsername().equals(updatedUser.getUsername())) {
                 Authentication newAuth = new UsernamePasswordAuthenticationToken(
                     updatedUser.getUsername(),

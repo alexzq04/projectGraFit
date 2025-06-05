@@ -10,6 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.grafit.projectGrafit.models.UserDTO;
 import com.grafit.projectGrafit.models.User;
 import com.grafit.projectGrafit.repositories.UserRepository;
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/main
 /**
  * Servicio que gestiona las operaciones relacionadas con los usuarios.
  */

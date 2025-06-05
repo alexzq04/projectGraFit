@@ -4,6 +4,13 @@ let charts = []; // Array para almacenar las instancias de las gráficas
 // Función para inicializar los ejercicios
 function initializeExercises(exercisesData) {
     exercises = exercisesData;
+<<<<<<< HEAD
+=======
+    // Cargar las gráficas después de inicializar los ejercicios
+    exercises.forEach((exercise, index) => {
+        loadExerciseChart(exercise, index);
+    });
+>>>>>>> origin/main
 }
 
 // Función para obtener la configuración de la gráfica según el tipo
@@ -154,6 +161,12 @@ function loadExerciseChart(exercise, index) {
     fetch(`/statistics/exercise/${exercise.idExercise}/progress`)
         .then(response => response.json())
         .then(data => {
+<<<<<<< HEAD
+=======
+            if (!data.progress || !data.progress.dates || data.progress.dates.length === 0) {
+                throw new Error('No hay datos de progreso disponibles');
+            }
+>>>>>>> origin/main
             // Crear contenedor para la gráfica
             const chartDiv = document.createElement('div');
             chartDiv.className = 'col-md-6 mb-4';
@@ -177,7 +190,26 @@ function loadExerciseChart(exercise, index) {
             const ctx = document.getElementById(`chart${index}`).getContext('2d');
             charts[index] = new Chart(ctx, config);
         })
+<<<<<<< HEAD
         .catch(error => console.error('Error:', error));
+=======
+        .catch(() => {
+            // Mostrar mensaje de error en la interfaz
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'col-md-6 mb-4';
+            errorDiv.innerHTML = `
+                <div class="card shadow-sm">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0">${exercise.name}</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-danger">No hay datos de progreso para mostrar en los últimos 30 días.</p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('chartsContainer').appendChild(errorDiv);
+        });
+>>>>>>> origin/main
 }
 
 // Cargar todas las gráficas al iniciar

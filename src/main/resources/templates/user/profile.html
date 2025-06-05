@@ -5,6 +5,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Perfil de Usuario - GraFit</title>
+<<<<<<< HEAD
+=======
+    <link rel="icon" type="image/png" th:href="@{/images/GraFitLogo_bgBlack.png}">
+>>>>>>> origin/main
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
     <style>
@@ -213,7 +217,12 @@
                                             <div class="input-group">
                                                 <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
                                                 <input type="text" class="form-control" id="name" th:field="*{name}"
+<<<<<<< HEAD
                                                     required pattern="^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?: [A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)?$" 
+=======
+                                                    required
+                                                    pattern="^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?: [A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)?$"
+>>>>>>> origin/main
                                                     title="Primera letra mayúscula, resto minúsculas. Puede tener un segundo nombre con el mismo formato"
                                                     maxlength="50">
                                             </div>
@@ -223,15 +232,24 @@
                                         <div class="col-md-4">
                                             <label for="surname1" class="form-label">Primer Apellido *</label>
                                             <input type="text" class="form-control" id="surname1" th:field="*{surname1}"
+<<<<<<< HEAD
                                                 required pattern="^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?:[- ][A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)?$" 
+=======
+                                                required pattern="^[A-ZÁÉÍÓÚÑÜ][a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$"
+>>>>>>> origin/main
                                                 title="Primera letra mayúscula, resto minúsculas. Puede tener un segundo apellido compuesto con guion o espacio"
                                                 maxlength="50">
                                         </div>
                                         <div class="col-md-4">
                                             <label for="surname2" class="form-label">Segundo Apellido</label>
                                             <input type="text" class="form-control" id="surname2" th:field="*{surname2}"
+<<<<<<< HEAD
                                                 pattern="^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?:[- ][A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)?$" 
                                                 title="Primera letra mayúscula, resto minúsculas. Puede tener un segundo apellido compuesto con guion o espacio"
+=======
+                                                pattern="^[A-ZÁÉÍÓÚÑÜ][a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$"
+                                                title="Si rellenas algo, primera letra mayúscula y resto minúsculas. Puede tener un segundo apellido compuesto"
+>>>>>>> origin/main
                                                 maxlength="50">
                                         </div>
 
@@ -240,8 +258,13 @@
                                             <label for="username" class="form-label">Nombre de Usuario *</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">@</span>
+<<<<<<< HEAD
                                                 <input type="text" class="form-control" id="username" th:field="*{username}"
                                                     required pattern="[a-zA-Z0-9_\.@]+" 
+=======
+                                                <input type="text" class="form-control" id="username"
+                                                    th:field="*{username}" required pattern="[a-zA-Z0-9_\.@]+"
+>>>>>>> origin/main
                                                     title="Se permiten letras, números, guiones bajos, puntos y @"
                                                     minlength="3" maxlength="20">
                                             </div>
@@ -251,7 +274,12 @@
                                         <div class="col-md-6">
                                             <label for="email" class="form-label">Email *</label>
                                             <div class="input-group">
+<<<<<<< HEAD
                                                 <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+=======
+                                                <span class="input-group-text"><i
+                                                        class="bi bi-envelope-fill"></i></span>
+>>>>>>> origin/main
                                                 <input type="email" class="form-control" id="email" th:field="*{email}"
                                                     required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                                                     title="Ingrese un email válido">
@@ -262,10 +290,17 @@
                                         <div class="col-md-6">
                                             <label for="phone" class="form-label">Teléfono</label>
                                             <div class="input-group">
+<<<<<<< HEAD
                                                 <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
                                                 <input type="tel" class="form-control" id="phone" th:field="*{phone}"
                                                     pattern="[0-9]{9}" 
                                                     title="El teléfono debe tener 9 dígitos"
+=======
+                                                <span class="input-group-text"><i
+                                                        class="bi bi-telephone-fill"></i></span>
+                                                <input type="tel" class="form-control" id="phone" th:field="*{phone}"
+                                                    pattern="[0-9]{9}" title="El teléfono debe tener 9 dígitos"
+>>>>>>> origin/main
                                                     oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                             </div>
                                         </div>
@@ -285,8 +320,13 @@
                                             <label for="heightMeters" class="form-label">Altura (metros) *</label>
                                             <div class="input-group">
                                                 <input type="number" step="0.01" class="form-control" id="heightMeters"
+<<<<<<< HEAD
                                                     th:field="*{heightMeters}" required min="0.5" max="3"
                                                     title="La altura debe estar entre 0.5 y 3 metros">
+=======
+                                                    th:field="*{heightMeters}" required min="1" max="3"
+                                                    title="La altura debe ser como mínimo 1 metro y como máximo 3 metros">
+>>>>>>> origin/main
                                                 <span class="input-group-text">m</span>
                                             </div>
                                         </div>
@@ -321,8 +361,13 @@
                                                         title="Mide desde la cadera hasta los hombros"></i>
                                                 </label>
                                                 <div class="input-group">
+<<<<<<< HEAD
                                                     <input type="number" step="0.1" class="form-control" id="torsoLength"
                                                         th:field="*{torsoLength}" min="0">
+=======
+                                                    <input type="number" step="0.1" class="form-control"
+                                                        id="torsoLength" th:field="*{torsoLength}" min="0">
+>>>>>>> origin/main
                                                     <span class="input-group-text">cm</span>
                                                 </div>
                                             </div>
@@ -332,8 +377,13 @@
                                                         title="Mide desde la cadera hasta la rodilla"></i>
                                                 </label>
                                                 <div class="input-group">
+<<<<<<< HEAD
                                                     <input type="number" step="0.1" class="form-control" id="femurLength"
                                                         th:field="*{femurLength}" min="0">
+=======
+                                                    <input type="number" step="0.1" class="form-control"
+                                                        id="femurLength" th:field="*{femurLength}" min="0">
+>>>>>>> origin/main
                                                     <span class="input-group-text">cm</span>
                                                 </div>
                                             </div>
@@ -343,8 +393,13 @@
                                                         title="Mide desde la rodilla hasta el tobillo"></i>
                                                 </label>
                                                 <div class="input-group">
+<<<<<<< HEAD
                                                     <input type="number" step="0.1" class="form-control" id="tibiaLength"
                                                         th:field="*{tibiaLength}" min="0">
+=======
+                                                    <input type="number" step="0.1" class="form-control"
+                                                        id="tibiaLength" th:field="*{tibiaLength}" min="0">
+>>>>>>> origin/main
                                                     <span class="input-group-text">cm</span>
                                                 </div>
                                             </div>
