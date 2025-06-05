@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GraFit - Recomendaciones Antropométricas</title>
+
+    <!-- Estilos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .video-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            border-bottom: 3px solid #dc3545;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .measurement-card {
+            transition: transform 0.2s;
+        }
+
+        .measurement-card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+    <!-- Header -->
+    <header>
+        <nav class="navbar navbar-dark bg-black">
+            <div class="container-fluid d-flex justify-content-between align-items-center">
+                <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a class="navbar-brand mx-auto h4 mb-0" href="/home">GraFit</a>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="btn btn-outline-danger">
+                        <i class="bi bi-box-arrow-left"></i>
+                    </button>
+                </form>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Offcanvas menu -->
+    <div class="offcanvas offcanvas-start bg-black" tabindex="-1" id="offcanvasMenu"
+        aria-labelledby="offcanvasMenuLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title text-white" id="offcanvasMenuLabel">GraFit</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                aria-label="Cerrar"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="nav flex-column">
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-white" th:href="@{/home}">
+                        <i class="bi bi-house-fill me-2"></i>Inicio
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-white" th:href="@{/profile}">
+                        <i class="bi bi-person-fill me-2"></i>Datos del Atleta
+                    </a>
+                </li>
+                <li class="nav-item mt-3 mb-1">
+                    <h6 class="text-danger text-uppercase fw-bold small">
+                        <i class="bi bi-lightning-fill me-2"></i>Ejercicios
+                    </h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ps-3 text-white" th:href="@{/exercises}">
+                        <i class="bi bi-plus-circle me-2"></i>Crear y Mostrar Ejercicios
+                    </a>
+                </li>
+                <li class="nav-item mt-3 mb-1">
+                    <h6 class="text-danger text-uppercase fw-bold small">
+                        <i class="bi bi-calendar-check-fill me-2"></i>Rutinas
+                    </h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ps-3 text-white" th:href="@{/routines}">
+                        <i class="bi bi-plus-circle me-2"></i>Crear y Mostrar Rutinas
+                    </a>
+                </li>
+                <li class="nav-item mt-3 mb-1">
+                    <h6 class="text-danger text-uppercase fw-bold small">
+                        <i class="bi bi-graph-up me-2"></i>Estadísticas
+                    </h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ps-3 text-white" th:href="@{/statistics}">
+                        <i class="bi bi-book-fill me-2"></i>Ver Progreso
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ps-3 text-white" th:href="@{/statistics/summary}">
+                        <i class="bi bi-book-fill me-2"></i>Resumen
+                    </a>
+                </li>
+                <li class="nav-item mt-3 mb-1">
+                    <h6 class="text-danger text-uppercase fw-bold small">
+                        <i class="bi bi-book-fill me-2"></i>Aprender
+                    </h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ps-3 text-white" data-bs-toggle="collapse" href="#collapseAprender">
+                        <i class="bi bi-plus-circle me-2"></i>Tutoriales
+                    </a>
+                    <div class="collapse show ms-3" id="collapseAprender">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link text-white" th:href="@{/tutorials/press-banca}">
+                                    <i class="bi bi-arrow-right me-2"></i>Press Banca
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" th:href="@{/tutorials/peso-muerto}">
+                                    <i class="bi bi-arrow-right me-2"></i>Peso Muerto
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" th:href="@{/tutorials/sentadilla}">
+                                    <i class="bi bi-arrow-right me-2"></i>Sentadilla
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white active" th:href="@{/tutorials/custom}">
+                                    <i class="bi bi-arrow-right me-2"></i>Personalizado
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <main class="container py-5">
+        <div class="card shadow-lg rounded-4 p-4 mb-5">
+            <div class="d-flex align-items-center mb-4">
+                <i class="bi bi-rulers text-danger me-3 fs-2"></i>
+                <h2 class="border-bottom border-danger pb-3 mb-0">Recomendaciones según tu Antropometría</h2>
+                <a th:href="@{/profile}" class="btn btn-outline-danger ms-auto">
+                    <i class="bi bi-pencil-fill me-2"></i>Editar Medidas
+                </a>
+            </div>
+
+            <!-- Medidas del usuario -->
+            <div class="row g-4 mb-5">
+                <div class="col-md-6">
+                    <div class="card measurement-card h-100">
+                        <div class="card-body text-center">
+                            <h5 class="mb-3">Longitud de Brazos</h5>
+                            <p class="mb-0"
+                                th:text="${user.armLength != null ? #numbers.formatDecimal(user.armLength, 1, 2) + ' cm' : 'No disponible'}">
+                                75 cm</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card measurement-card h-100">
+                        <div class="card-body text-center">
+                            <h5 class="mb-3">Longitud del Torso</h5>
+                            <p class="mb-0"
+                                th:text="${user.torsoLength != null ? #numbers.formatDecimal(user.torsoLength, 1, 2) + ' cm' : 'No disponible'}">
+                                50 cm</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card measurement-card h-100">
+                        <div class="card-body text-center">
+                            <h5 class="mb-3">Longitud del Fémur</h5>
+                            <p class="mb-0"
+                                th:text="${user.femurLength != null ? #numbers.formatDecimal(user.femurLength, 1, 2) + ' cm' : 'No disponible'}">
+                                45 cm</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card measurement-card h-100">
+                        <div class="card-body text-center">
+                            <h5 class="mb-3">Longitud de la Tibia</h5>
+                            <p class="mb-0"
+                                th:text="${user.tibiaLength != null ? #numbers.formatDecimal(user.tibiaLength, 1, 2) + ' cm' : 'No disponible'}">
+                                40 cm</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Videos recomendados -->
+            <div class="video-section">
+                <h3 class="section-title" role="button" data-bs-toggle="modal" data-bs-target="#infoModal"
+                    style="cursor: pointer">
+                    <i class="bi bi-info-circle me-2"></i>Videos Recomendados según tus Medidas
+                </h3>
+
+                <!-- Modal Informativo -->
+                <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="infoModalLabel">Criterios de Recomendación</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="alert alert-info mb-4">
+                                    <i class="bi bi-info-circle-fill me-2"></i>
+                                    <strong>¿Cómo se calculan los porcentajes?</strong>
+                                    <p class="mb-0">Los porcentajes indican la proporción entre dos medidas. Por
+                                        ejemplo, si decimos que los brazos son >110% del torso, significa que la
+                                        longitud de los brazos es mayor que 1.1 veces la longitud del torso.</p>
+                                </div>
+
+                                <div class="mb-4">
+                                    <h6 class="text-danger"><i class="bi bi-bullseye me-2"></i>Press Banca</h6>
+                                    <p class="mb-2">Se compara la longitud de los brazos con la longitud del torso:</p>
+                                    <ul>
+                                        <li><strong>Brazos Largos:</strong> Cuando la longitud de los brazos es mayor
+                                            que 1.1 veces la longitud del torso.
+                                            <br>
+                                            <em>Ejemplo: Si tu torso mide 50cm, tus brazos se consideran largos si miden
+                                                más de 55cm (50cm × 1.1 = 55cm)</em>
+                                        </li>
+                                        <li><strong>Brazos Cortos:</strong> Cuando la longitud de los brazos es menor
+                                            que 0.9 veces la longitud del torso.
+                                            <br>
+                                            <em>Ejemplo: Si tu torso mide 50cm, tus brazos se consideran cortos si miden
+                                                menos de 45cm (50cm × 0.9 = 45cm)</em>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="mb-4">
+                                    <h6 class="text-danger"><i class="bi bi-bullseye me-2"></i>Peso Muerto</h6>
+                                    <p class="mb-2">Se compara la longitud del fémur con la longitud del torso:</p>
+                                    <ul>
+                                        <li><strong>Sumo:</strong> Cuando la longitud del fémur es igual o mayor que la
+                                            longitud del torso.
+                                            <br>
+                                            <em>Ejemplo: Si tu torso mide 50cm, se recomienda sumo si tu fémur mide 50cm
+                                                o más</em>
+                                        </li>
+                                        <li><strong>Convencional:</strong> Cuando la longitud del fémur es menor que la
+                                            longitud del torso.
+                                            <br>
+                                            <em>Ejemplo: Si tu torso mide 50cm, se recomienda convencional si tu fémur
+                                                mide menos de 50cm</em>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <h6 class="text-danger"><i class="bi bi-bullseye me-2"></i>Sentadilla</h6>
+                                    <p class="mb-2">Se compara la longitud del fémur con la longitud de la tibia:</p>
+                                    <ul>
+                                        <li><strong>Low Bar:</strong> Cuando la longitud del fémur es mayor que 1.2
+                                            veces la longitud de la tibia.
+                                            <br>
+                                            <em>Ejemplo: Si tu tibia mide 40cm, se recomienda low bar si tu fémur mide
+                                                más de 48cm (40cm × 1.2 = 48cm)</em>
+                                        </li>
+                                        <li><strong>High Bar:</strong> Cuando la longitud del fémur es igual o menor que
+                                            1.2 veces la longitud de la tibia.
+                                            <br>
+                                            <em>Ejemplo: Si tu tibia mide 40cm, se recomienda high bar si tu fémur mide
+                                                48cm o menos</em>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mensaje si faltan medidas -->
+                <div th:if="${user.armLength == null || user.torsoLength == null || user.femurLength == null || user.tibiaLength == null}"
+                    class="alert alert-warning">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    Por favor, completa tus medidas antropométricas en tu perfil para recibir recomendaciones
+                    personalizadas.
+                </div>
+
+                <!-- Press Banca -->
+                <div class="mb-5">
+                    <h4 class="text-danger mb-3">Press Banca</h4>
+
+                    <!-- Mensaje cuando faltan medidas o son 0 -->
+                    <div th:if="${user.armLength == null || user.torsoLength == null || user.armLength == 0 || user.torsoLength == 0}"
+                        class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        Para recibir recomendaciones específicas sobre la técnica de press banca,
+                        necesitamos conocer la longitud de tus brazos y torso.
+                        Por favor, completa estas medidas en tu
+                        <a th:href="@{/profile}" class="alert-link">perfil</a>.
+                    </div>
+
+                    <!-- Videos cuando hay medidas válidas -->
+                    <div
+                        th:if="${user.armLength != null && user.torsoLength != null && user.armLength > 0 && user.torsoLength > 0}">
+
+                        <!-- Press Banca - Brazos Largos -->
+                        <div th:if="${user.armLength > user.torsoLength * 1.1}">
+                            <h5 class="text-danger mb-3">Recomendación: Press Banca para Brazos Largos</h5>
+                            <div class="video-container">
+                                <iframe width="560" height="315"
+                                    th:src="@{'https://www.youtube.com/embed/Fq4QTiNud54?si=Q_2D5oxbux1xcizp'}"
+                                    title="YouTube video player" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen></iframe>
+                            </div>
+                            <p class="text-muted">
+                                Con brazos proporcionalmente más largos que el torso, tu recorrido en el press banca es
+                                mayor, lo que significa que estás en desventaja mecánica y tienes que hacer un mayor
+                                recorrido para mover un peso. Esto afecta al peso total que puedes mover.
+                                Con este video, aprenderás a: </p>
+                            <ul class="text-muted mt-2">
+                                <li>Optimizar el agarre para reducir el recorrido de la barra</li>
+                                <li>Maximizar el arco en el banco para disminuir la distancia del recorrido</li>
+                                <li>Mejorar la estabilidad</li>
+                                <li>Aprender a usar el Leg Drive</li>
+                            </ul>
+
+                        </div>
+
+                        <!-- Press Banca - Brazos Cortos -->
+                        <div th:if="${user.armLength < user.torsoLength * 0.9}">
+                            <h5 class="text-danger mb-3">Recomendación: Press Banca para Brazos Cortos</h5>
+                            <div class="video-container">
+                                <iframe width="560" height="315"
+                                    th:src="@{'https://www.youtube.com/embed/uF12HCNIZFY?si=aHX9bK57nWX78Ui5'}"
+                                    title="YouTube video player" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen></iframe>
+                            </div>
+                            <p class="text-muted">
+                                Tener los brazos proporcionalmente más cortos que el torso te da ciertas ventajas
+                                mecánicas
+                                en el press banca, pero es importante optimizar la técnica. Este video te muestra cómo:
+                            </p>
+                            <ul class="text-muted mt-2">
+                                <li>Encontrar el agarre óptimo</li>
+                                <li>Acortar el recorrido para levantar más peso</li>
+                                <li>Aprender a realizar el arco lumbar para reducir el recorrido de la barra</li>
+                                <li>Aprender la trayectoria que tiene que seguir la barra</li>
+                                <li>Variantes que puedes utilizar para levantar más peso y mejorar ciertos aspectos de
+                                    los que puedes carecer</li>
+                                <li>Ejemplos para programar el press de banca en tu rutina</li>
+                            </ul>
+                        </div>
+
+                        <!-- Press Banca - Brazos Normales (cuando no es ni largo ni corto) -->
+                        <div
+                            th:unless="${user.armLength > user.torsoLength * 1.1 || user.armLength < user.torsoLength * 0.9}">
+                            <h5 class="text-danger mb-3">Recomendación: Press Banca Técnica Estándar</h5>
+                            <div class="video-container">
+                                <iframe width="560" height="315" th:src="@{'https://www.youtube.com/embed/vcBig73ojpE'}"
+                                    title="YouTube video player" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen></iframe>
+                            </div>
+                            <p class="text-muted">
+                                Con una proporción equilibrada entre la longitud de tus brazos y torso, puedes seguir la
+                                técnica estándar del press banca. Este video te muestra:</p>
+                            <ul class="text-muted mt-2">
+                                <li>Encontrar el agarre óptimo</li>
+                                <li>Acortar el recorrido para levantar más peso</li>
+                                <li>Aprender a realizar el arco lumbar para reducir el recorrido de la barra</li>
+                                <li>Aprender la trayectoria que tiene que seguir la barra</li>
+                                <li>Variantes que puedes utilizar para levantar más peso y mejorar ciertos aspectos de
+                                    los que puedes carecer</li>
+                                <li>Ejemplos para programar el press de banca en tu rutina</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Peso Muerto -->
+                <div class="mb-5">
+                    <h4 class="text-danger mb-3">Peso Muerto</h4>
+
+                    <!-- Mensaje cuando faltan medidas o son 0 -->
+                    <div th:if="${user.femurLength == null || user.torsoLength == null || user.femurLength == 0 || user.torsoLength == 0}"
+                        class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        Para recibir recomendaciones específicas sobre la técnica de peso muerto,
+                        necesitamos conocer la longitud de tu fémur y torso.
+                        Por favor, completa estas medidas en tu
+                        <a th:href="@{/profile}" class="alert-link">perfil</a>.
+                    </div>
+
+                    <!-- Videos cuando hay medidas válidas -->
+                    <div
+                        th:if="${user.femurLength != null && user.torsoLength != null && user.femurLength > 0 && user.torsoLength > 0}">
+                        <!-- Peso Muerto Sumo -->
+                        <div th:if="${user.femurLength >= user.torsoLength}">
+                            <h5 class="text-danger mb-3">Recomendación: Peso Muerto Sumo</h5>
+                            <div class="video-container">
+                                <iframe width="560" height="315"
+                                    th:src="@{'https://www.youtube.com/embed/XsrD5y8EIKU?si=8Vl5VgT6ZGrQbFnb'}"
+                                    title="YouTube video player" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <p class="text-muted">
+                                Con tu estructura corporal, donde el fémur es igual o más largo que el torso, el peso
+                                muerto
+                                estilo <strong>sumo</strong> puede ser más beneficioso por varias razones:</p>
+                            <ul class="text-muted mt-2">
+                                <li><strong>Posición más vertical del torso:</strong> Al tener un fémur largo, la
+                                    postura sumo te permite mantener el torso más erguido, reduciendo el estrés en la
+                                    zona lumbar.</li>
+                                <li><strong>Menor rango de movimiento:</strong> La postura más ancha reduce la distancia
+                                    que la barra necesita recorrer, lo que puede permitirte levantar más peso de forma
+                                    segura.</li>
+                                <li><strong>Mayor activación de aductores:</strong> La posición amplia enfatiza el
+                                    trabajo de los aductores y la cara interna de los muslos.</li>
+                                <li><strong>Mejor aprovechamiento de la cadera:</strong> Tu estructura te permite
+                                    maximizar la apertura de cadera en esta variante.</li>
+                            </ul>
+                            <p class="text-muted">Este video te mostrará:</p>
+                            <ul class="text-muted mt-2">
+                                <li>Cómo encontrar tu postura ideal según tu estructura</li>
+                                <li>La correcta colocación de los pies y el agarre</li>
+                                <li>Técnicas para mantener la tensión adecuada</li>
+                                <li>Errores comunes a evitar</li>
+                            </ul>
+
+                        </div>
+
+                        <!-- Peso Muerto Convencional -->
+                        <div th:unless="${user.femurLength >= user.torsoLength}">
+                            <h5 class="text-danger mb-3">Recomendación: Peso Muerto Convencional</h5>
+                            <div class="video-container">
+                                <iframe width="560" height="315"
+                                    th:src="@{'https://www.youtube.com/embed/VL5Ab0T07e4?si=hw_CNCqgEIDbAEt_'}"
+                                    title="YouTube video player" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <p class="text-muted">
+                                Tu estructura corporal, con un fémur más corto que el torso, se adapta mejor al peso
+                                muerto
+                                <strong>convencional</strong> por las siguientes razones:
+                            </p>
+                            <ul class="text-muted mt-2">
+                                <li><strong>Mejor palanca mecánica:</strong> Tu proporción fémur-torso te permite
+                                    generar más fuerza desde la posición convencional.</li>
+                                <li><strong>Mayor activación posterior:</strong> Esta variante maximiza el trabajo de
+                                    isquiotibiales y glúteos con tu estructura.</li>
+                                <li><strong>Posición natural de cadera:</strong> Tu anatomía facilita encontrar la
+                                    posición óptima de inicio sin necesidad de aperturas extremas.</li>
+                                <li><strong>Transferencia de fuerza eficiente:</strong> La alineación vertical de tus
+                                    articulaciones en esta variante optimiza la transmisión de fuerza.</li>
+                            </ul>
+                            <p class="text-muted">Este video te enseñará:</p>
+                            <ul class="text-muted mt-2">
+                                <li>La configuración correcta de pies y cadera para tu estructura</li>
+                                <li>Cómo mantener una espalda neutra durante todo el movimiento</li>
+                                <li>La secuencia correcta de activación muscular</li>
+                                <li>Variaciones y ejercicios complementarios</li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sentadilla -->
+                <div class="mb-5">
+                    <h4 class="text-danger mb-3">Sentadilla</h4>
+
+                    <!-- Mensaje cuando faltan medidas o son 0 -->
+                    <div th:if="${user.femurLength == null || user.tibiaLength == null || user.femurLength == 0 || user.tibiaLength == 0}"
+                        class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        Para recibir recomendaciones específicas sobre la técnica de sentadilla,
+                        necesitamos conocer la longitud de tu fémur y tibia.
+                        Por favor, completa estas medidas en tu
+                        <a th:href="@{/profile}" class="alert-link">perfil</a>.
+                    </div>
+
+                    <!-- Videos cuando hay medidas válidas -->
+                    <div
+                        th:if="${user.femurLength != null && user.tibiaLength != null && user.femurLength > 0 && user.tibiaLength > 0}">
+                        <!-- Fémur Largo (>120% de la tibia) - Low Bar -->
+                        <div th:if="${user.femurLength > user.tibiaLength * 1.2}">
+                            <h5 class="text-danger mb-3">Recomendación: Sentadilla Low Bar</h5>
+                            <div class="video-container">
+                                <iframe width="560" height="315"
+                                    th:src="@{'https://www.youtube.com/embed/BUIu720DQH4?si=cwHQWNUBnTsJQmHm'}"
+                                    title="YouTube video player" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <p class="text-muted">
+                                Con un fémur significativamente más largo que la tibia, la variante
+                                <strong>low bar</strong> es ideal por estas razones:
+                            </p>
+                            <ul class="text-muted mt-2">
+                                <li><strong>Mejor distribución del peso:</strong> La posición más baja de la barra
+                                    compensa la longitud del fémur, mejorando el equilibrio general.</li>
+                                <li><strong>Mayor inclinación del torso:</strong> Permite una posición más natural según
+                                    tu estructura.</li>
+                                <li><strong>Activación posterior aumentada:</strong> Mayor énfasis en glúteos e
+                                    isquiotibiales.</li>
+                                <li><strong>Centro de gravedad optimizado:</strong> La barra baja ayuda a mantener el
+                                    peso centrado sobre el pie medio.</li>
+                            </ul>
+                            <p class="text-muted">Con este video, aprendes a:</p>
+                            <ul class="text-muted mt-2">
+                                <li>La posición correcta de la barra en la espalda</li>
+                                <li>Cómo ajustar la inclinación del torso según tu estructura</li>
+                                <li>Técnicas de bracing y respiración</li>
+                                <li>Progresiones y variaciones según tu nivel</li>
+                            </ul>
+                        </div>
+
+                        <!-- Fémur Normal/Corto (≤120% de la tibia) - High Bar -->
+                        <div th:unless="${user.femurLength > user.tibiaLength * 1.2}">
+                            <h5 class="text-danger mb-3">Recomendación: Sentadilla High Bar</h5>
+                            <div class="video-container">
+                                <iframe width="560" height="315"
+                                    th:src="@{'https://www.youtube.com/embed/bEv6CCg2BC8?si=_7DqXX_1U_4BQXR4'}"
+                                    title="YouTube video player" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <p class="text-muted">
+                                Tu proporción entre fémur y tibia (≤120%) hace que la variante <strong>high bar</strong>
+                                sea más adecuada por estos motivos:</p>
+                            <ul class="text-muted mt-2">
+                                <li><strong>Torso más vertical:</strong> Tu estructura permite mantener una posición más
+                                    erguida, ideal para high bar.</li>
+                                <li><strong>Mayor rango de movimiento:</strong> Facilita alcanzar mayor profundidad de
+                                    forma segura.</li>
+                                <li><strong>Equilibrio natural:</strong> La posición alta de la barra complementa tu
+                                    estructura corporal.</li>
+                                <li><strong>Transferencia al deporte:</strong> Mayor similitud con movimientos atléticos
+                                    y gestos deportivos.</li>
+                            </ul>
+                            <ul class="text-muted mt-2">
+                                <li>La colocación óptima de la barra en los trapecios</li>
+                                <li>Cómo mantener la verticalidad del torso</li>
+                                <li>Técnicas para maximizar la movilidad de tobillo y cadera</li>
+                                <li>Ejercicios de movilidad y estabilidad complementarios</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

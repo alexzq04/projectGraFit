@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GraFit - Press de Banca de Competición</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .tutorial-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            border-bottom: 3px solid #dc3545;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Estilos personalizados para las pestañas */
+        .nav-pills {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-pills .nav-link {
+            color: #dc3545;
+            background-color: transparent;
+            border: 1px solid #dc3545;
+            margin: 0 0.5rem;
+            padding: 0.75rem 1.5rem;
+        }
+
+        .nav-pills .nav-link.active {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .nav-pills .nav-link:hover:not(.active) {
+            background-color: rgba(220, 53, 69, 0.1);
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+    <!-- Navbar con logo centrado -->
+    <nav class="navbar navbar-dark bg-black">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu"
+                aria-controls="offcanvasMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <span class="navbar-brand mx-auto h4 mb-0">GraFit</span>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="btn btn-outline-danger">
+                    <i class="bi bi-box-arrow-left"></i>
+                </button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- Offcanvas menu -->
+    <div class="offcanvas offcanvas-start bg-black" tabindex="-1" id="offcanvasMenu"
+        aria-labelledby="offcanvasMenuLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title text-white" id="offcanvasMenuLabel">GraFit</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                aria-label="Cerrar"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="nav flex-column">
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-white" th:href="@{/home}">
+                        <i class="bi bi-house-fill me-2"></i>Inicio
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-white" th:href="@{/profile}">
+                        <i class="bi bi-person-fill me-2"></i>Datos del Atleta
+                    </a>
+                </li>
+                <li class="nav-item mt-3 mb-1">
+                    <h6 class="text-danger text-uppercase fw-bold small">
+                        <i class="bi bi-lightning-fill me-2"></i>Ejercicios
+                    </h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ps-3 text-white" th:href="@{/exercises}">
+                        <i class="bi bi-plus-circle me-2"></i>Crear y Mostrar Ejercicios
+                    </a>
+                </li>
+                <li class="nav-item mt-3 mb-1">
+                    <h6 class="text-danger text-uppercase fw-bold small">
+                        <i class="bi bi-calendar-check-fill me-2"></i>Rutinas
+                    </h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ps-3 text-white" th:href="@{/routines}">
+                        <i class="bi bi-plus-circle me-2"></i>Crear y Mostrar Rutinas
+                    </a>
+                </li>
+                <li class="nav-item mt-3 mb-1">
+                    <h6 class="text-danger text-uppercase fw-bold small">
+                        <i class="bi bi-graph-up me-2"></i>Estadísticas
+                    </h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ps-3 text-white" th:href="@{/statistics}">
+                        <i class="bi bi-book-fill me-2"></i>Ver Progreso
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ps-3 text-white active" th:href="@{/statistics/summary}">
+                        <i class="bi bi-book-fill me-2"></i>Resumen
+                    </a>
+                </li>
+                <li class="nav-item mt-3 mb-1">
+                    <h6 class="text-danger text-uppercase fw-bold small">
+                        <i class="bi bi-book-fill me-2"></i>Aprender
+                    </h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ps-3 text-white" data-bs-toggle="collapse" href="#collapseAprender">
+                        <i class="bi bi-plus-circle me-2"></i>Tutoriales
+                    </a>
+                    <div class="collapse show ms-3" id="collapseAprender">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link text-white active" th:href="@{/tutorials/press-banca}">
+                                    <i class="bi bi-arrow-right me-2"></i>Press Banca
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" th:href="@{/tutorials/peso-muerto}">
+                                    <i class="bi bi-arrow-right me-2"></i>Peso Muerto
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" th:href="@{/tutorials/sentadilla}">
+                                    <i class="bi bi-arrow-right me-2"></i>Sentadilla
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" th:href="@{/tutorials/custom}">
+                                    <i class="bi bi-arrow-right me-2"></i>Personalizado
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <main class="container py-5">
+
+        <div class="card shadow-lg rounded-4 p-4 mb-5">
+            <div class="d-flex align-items-center mb-4">
+                <i class="bi bi-book-fill text-danger me-3 fs-2"></i>
+                <h2 class="border-bottom border-danger pb-3 mb-0">Press de Banca de Competición</h2>
+            </div>
+
+            <div class="row mb-5">
+                <div class="col-md-6">
+                    <div class="exercise-card bg-white p-4">
+                        <h3 class="text-danger mb-4">¿Qué es el Press de Banca?</h3>
+                        <p class="lead">Uno de los tres movimientos del Powerlifting. El movimiento consiste en
+                            llevar
+                            una barra cargada con discos al pecho y después empujarla hacia arriba bloqueando los
+                            codos.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex align-items-center">
+                    <div class="exercise-card bg-white p-4">
+                        <img th:src="@{/images/pressBancaTutorial.jpg}" alt="Press de banca general"
+                            class="img-fluid rounded shadow">
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Músculos Principales -->
+            <div class="exercise-card bg-white p-4">
+                <h3 class="text-danger mb-4">Músculos Principales</h3>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card border-0">
+                            <div class="card-body">
+                                <h4 class="mb-3">Pectoral Mayor y Menor</h4>
+                                <div class="text-center mb-3">
+                                    <img th:src="@{/images/pectoralPartes.png}" alt="Partes de pectoral"
+                                        class="img-fluid rounded">
+                                </div>
+                                <p>En el press de banca, la porción que más se ve involucrada en el movimiento es la
+                                    porción esternal (pectoral mayor).</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-0">
+                            <div class="card-body">
+                                <h4 class="mb-3">Deltoides Anterior y Tríceps</h4>
+                                <div class="text-center mb-3">
+                                    <img th:src="@{/images/deltoidesAnteriorYTriceps.png}"
+                                        alt="Deltoides anterior y tríceps" class="img-fluid rounded">
+                                </div>
+                                <p>Al ser un movimiento de empuje, el deltoides anterior y el triceps se ven muy
+                                    involucrados.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- Técnica -->
+            <div class="exercise-card p-4 mt-4">
+                <h3 class="text-danger mb-4">Técnica Correcta</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card h-100 p-4 border-0">
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="badge bg-danger p-2 me-3">1</span>
+                                <h5 class="mb-0">Retracción Escapular</h5>
+                            </div>
+                            <div class="text-center mb-3">
+                                <img th:src="@{/images/benchPressArch.png}" alt="Retracción escapular"
+                                    class="img-fluid rounded">
+                            </div>
+                            <div class="card border-0">
+                                <div class="card-body">
+                                    <p class="mb-3">Para tener la máxima estabilidad y fuerza posible en el
+                                        press de
+                                        banca deberás de realizar una retracción escapular.
+                                        Esto lo puedes hacer mediante 2 simples pasos:</p>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item bg-transparent">
+                                            <i class="bi bi-arrow-right-circle-fill text-danger me-2"></i>
+                                            Extiende ambos brazos hacia delante
+                                        </li>
+                                        <li class="list-group-item bg-transparent">
+                                            <i class="bi bi-arrow-right-circle-fill text-danger me-2"></i>
+                                            Lleva tus codos hacia atrás y a su vez baja los hombros
+                                        </li>
+                                    </ul>
+                                    <p class="mt-3 mb-0">Una vez entendido esto, acuéstate en el banco
+                                        deslizándote
+                                        hacia
+                                        adentro manteniendo la retracción escapular y con los pies en contacto
+                                        con
+                                        el
+                                        suelo. Si haces esto bien, tu espalda formará un arco. Esta posición la
+                                        deberás
+                                        de
+                                        mantener antes de sacar la barra del rack.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card h-100 p-4 border-0">
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="badge bg-danger p-2 me-3">2</span>
+                                <h5 class="mb-0">Inicio del Movimiento</h5>
+                            </div>
+                            <div class="text-center mb-3">
+                                <img th:src="@{/images/pressBancaTutorial_Inicio.jpg}" alt="Posición inicial"
+                                    class="img-fluid rounded">
+                            </div>
+                            <div class="card border-0 p-3">
+                                <div class="card-body">
+
+                                    <p class="mb-0">Saca la barra del rack y espera a la señal del juez para que
+                                        puedas
+                                        empezar
+                                        a bajar la barra.</p>
+                                    <div class="alert alert-info mb-3" role="alert">
+                                        <i class="bi bi-info-circle-fill me-2"></i>
+                                        <strong>Nota:</strong> Si al sacarla notas que has perdido la retracción
+                                        escapular, lo
+                                        más probable es que hayas levantado los hombros. Esto se debe a que has
+                                        configurado una
+                                        altura incorrecta en el rack.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="card h-100 p-4 border-0">
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="badge bg-danger p-2 me-3">3</span>
+                                <h5 class="mb-0">Fase Excéntrica y Concéntrica</h5>
+                            </div>
+                            <div class="text-center mb-3">
+                                <img th:src="@{/images/pressBancaExcentrica.webp}" alt="Fases del press banca"
+                                    class="img-fluid rounded">
+                            </div>
+                            <div class="card border-0 bg-white p-3 shadow-sm">
+                                <div class="card-body">
+                                    <h6 class="card-title text-danger mb-3">Secuencia del Movimiento:</h6>
+                                    <ol class="mb-0">
+                                        <li>Baja la barra de manera controlada hasta que toque el pecho</li>
+                                        <li>Mantén una pausa hasta escuchar la orden "PRESS" del juez</li>
+                                        <li>Empuja la barra hacia arriba formando una trayectoria con un ligero
+                                            arco
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Anular Movimiento -->
+            <div class="exercise-card p-4 mt-4">
+                <h3 class="text-danger mb-4">Causas de Anulación</h3>
+                <div class="card p-4 border-0">
+                    <div class="card border-0 bg-danger p-3 mb-4">
+                        <div class="card-body text-white text-center">
+                            <p class="lead mb-0">Un intento de press de banca puede ser declarado nulo por los
+                                siguientes motivos</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card border-danger h-100 shadow-sm">
+                                <div class="card-header bg-danger text-white">
+                                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                    Errores de Ejecución
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="d-flex align-items-start mb-3 p-2 rounded hover-bg-light">
+                                            <i class="bi bi-x-circle-fill text-danger me-2 mt-1"></i>
+                                            <div>
+                                                <strong>No seguir las señales del juez</strong>
+                                                <p class="mb-0 text-muted">Iniciar o finalizar sin esperar las
+                                                    órdenes
+                                                </p>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex align-items-start mb-3 p-2 rounded hover-bg-light">
+                                            <i class="bi bi-x-circle-fill text-danger me-2 mt-1"></i>
+                                            <div>
+                                                <strong>Rebotar la barra</strong>
+                                                <p class="mb-0 text-muted">La barra debe detenerse en el pecho
+                                                </p>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex align-items-start mb-3 p-2 rounded hover-bg-light">
+                                            <i class="bi bi-x-circle-fill text-danger me-2 mt-1"></i>
+                                            <div>
+                                                <strong>No realizar pausa en el pecho</strong>
+                                                <p class="mb-0 text-muted">Esperar la señal de "Press"</p>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex align-items-start mb-3 p-2 rounded hover-bg-light">
+                                            <i class="bi bi-x-circle-fill text-danger me-2 mt-1"></i>
+                                            <div>
+                                                <strong>Despegue del glúteo del banco</strong>
+                                                <p class="mb-0 text-muted">El glúteo debe estar en contacto con
+                                                    el banco en el momento de la fase excéntrica y concéntrica</p>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex align-items-start mb-3 p-2 rounded hover-bg-light">
+                                            <i class="bi bi-x-circle-fill text-danger me-2 mt-1"></i>
+                                            <div>
+                                                <strong>Pies en el banco</strong>
+                                                <p class="mb-0 text-muted">Los pies deben estar en el suelo</p>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex align-items-start mb-3 p-2 rounded hover-bg-light">
+                                            <i class="bi bi-x-circle-fill text-danger me-2 mt-1"></i>
+                                            <div>
+                                                <strong>Profundidad insuficiente</strong>
+                                                <p class="mb-0 text-muted">Los codos deben bajar al nivel de los
+                                                    hombros
+                                                </p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/tutorials/press-banca.js}"></script>
+</body>
+
+</html>

@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GraFit - Tutorial de Peso Muerto</title>
+
+    <!-- Estilos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Estilos personalizados -->
+    <style>
+        .tutorial-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            border-bottom: 3px solid #dc3545;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Estilos personalizados para las pestañas */
+        .nav-pills {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-pills .nav-link {
+            color: #dc3545;
+            background-color: transparent;
+            border: 1px solid #dc3545;
+            margin: 0 0.5rem;
+            padding: 0.75rem 1.5rem;
+        }
+
+        .nav-pills .nav-link.active {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .nav-pills .nav-link:hover:not(.active) {
+            background-color: rgba(220, 53, 69, 0.1);
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+    <!-- Header -->
+    <header>
+        <nav class="navbar navbar-dark bg-black">
+            <div class="container-fluid d-flex justify-content-between align-items-center">
+                <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a class="navbar-brand mx-auto h4 mb-0" href="/home">GraFit</a>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="btn btn-outline-danger">
+                        <i class="bi bi-box-arrow-left"></i>
+                    </button>
+                </form>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Offcanvas menu -->
+    <div class="offcanvas offcanvas-start bg-black" tabindex="-1" id="offcanvasMenu"
+        aria-labelledby="offcanvasMenuLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title text-white" id="offcanvasMenuLabel">GraFit</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                aria-label="Cerrar"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="nav flex-column">
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-white" th:href="@{/home}">
+                        <i class="bi bi-house-fill me-2"></i>Inicio
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-white" th:href="@{/profile}">
+                        <i class="bi bi-person-fill me-2"></i>Datos del Atleta
+                    </a>
+                </li>
+                <li class="nav-item mt-3 mb-1">
+                    <h6 class="text-danger text-uppercase fw-bold small">
+                        <i class="bi bi-lightning-fill me-2"></i>Ejercicios
+                    </h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ps-3 text-white" th:href="@{/exercises}">
+                        <i class="bi bi-plus-circle me-2"></i>Crear y Mostrar Ejercicios
+                    </a>
+                </li>
+                <li class="nav-item mt-3 mb-1">
+                    <h6 class="text-danger text-uppercase fw-bold small">
+                        <i class="bi bi-calendar-check-fill me-2"></i>Rutinas
+                    </h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ps-3 text-white" th:href="@{/routines}">
+                        <i class="bi bi-plus-circle me-2"></i>Crear y Mostrar Rutinas
+                    </a>
+                </li>
+                <li class="nav-item mt-3 mb-1">
+                    <h6 class="text-danger text-uppercase fw-bold small">
+                        <i class="bi bi-graph-up me-2"></i>Estadísticas
+                    </h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ps-3 text-white" th:href="@{/statistics}">
+                        <i class="bi bi-book-fill me-2"></i>Ver Progreso
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ps-3 text-white active" th:href="@{/statistics/summary}">
+                        <i class="bi bi-book-fill me-2"></i>Resumen
+                    </a>
+                </li>
+                <li class="nav-item mt-3 mb-1">
+                    <h6 class="text-danger text-uppercase fw-bold small">
+                        <i class="bi bi-book-fill me-2"></i>Aprender
+                    </h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ps-3 text-white" data-bs-toggle="collapse" href="#collapseAprender">
+                        <i class="bi bi-plus-circle me-2"></i>Tutoriales
+                    </a>
+                    <div class="collapse show ms-3" id="collapseAprender">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link text-white" th:href="@{/tutorials/press-banca}">
+                                    <i class="bi bi-arrow-right me-2"></i>Press Banca
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white active" th:href="@{/tutorials/peso-muerto}">
+                                    <i class="bi bi-arrow-right me-2"></i>Peso Muerto
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" th:href="@{/tutorials/sentadilla}">
+                                    <i class="bi bi-arrow-right me-2"></i>Sentadilla
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" th:href="@{/tutorials/custom}">
+                                    <i class="bi bi-arrow-right me-2"></i>Personalizado
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <main class="container py-5">
+        <div class="card shadow-lg rounded-4 p-4 mb-5">
+            <div class="d-flex align-items-center mb-4">
+                <i class="bi bi-book-fill text-danger me-3 fs-2"></i>
+                <h2 class="border-bottom border-danger pb-3 mb-0">Peso Muerto de Competición</h2>
+            </div>
+
+            <!-- Descripción -->
+            <div class="row mb-5">
+                <div class="col-md-6">
+                    <div class="exercise-card bg-white p-4">
+                        <h3 class="text-danger mb-4">¿Qué es el Peso Muerto?</h3>
+                        <p class="lead">
+                            Uno de los tres levantamientos del Powerlifting. Es el máximo representante de la fuerza
+                            total de cuerpo y es donde más kilos se pueden mover.
+                            Es un ejercicio donde el atleta levanta una barra cargada con discos desde el suelo hasta
+                            llegar a una posición totalmente erguida, con los brazos extendidos, la espalda recta y las
+                            caderas y rodillas completamente extendidas.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex align-items-center">
+                    <div class="exercise-card bg-white p-4">
+                        <img th:src="@{/images/tutorials/pesoMuertoTutorial/pesoMuerto_main.jpg}"
+                            alt="Peso muerto general" class="img-fluid rounded shadow">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tipos de Peso Muerto -->
+            <section class="tutorial-section">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2 class="section-title d-flex align-items-center">
+                            <i class="bi bi-list-check text-danger me-3"></i>
+                            Tipos de Peso Muerto
+                        </h2>
+                    </div>
+                </div>
+
+                <!-- Navegación por pestañas -->
+                <ul class="nav nav-pills mb-4" id="deadliftTabs" role="tablist">
+                    <li class="nav-item d-flex align-items-center" role="presentation">
+                        <button class="nav-link active" id="conventional-tab" data-bs-toggle="pill"
+                            data-bs-target="#conventional" type="button" role="tab">
+                            Peso Muerto Convencional
+                        </button>
+                    </li>
+                    <li class="nav-item d-flex align-items-center" role="presentation">
+                        <button class="nav-link" id="sumo-tab" data-bs-toggle="pill" data-bs-target="#sumo"
+                            type="button" role="tab">
+                            Peso Muerto Sumo
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- Contenido de las pestañas -->
+                <div class="tab-content" id="deadliftTabContent">
+                    <!-- Peso Muerto Convencional -->
+                    <div class="tab-pane fade show active" id="conventional" role="tabpanel">
+                        <div class="exercise-card bg-white p-4">
+                            <h3 class="text-danger mb-4">Músculos Principales</h3>
+                            <div class="row g-4">
+                                <!-- Isquiotibiales y Glúteos -->
+                                <div class="col-md-6">
+                                    <div class="card border-0">
+                                        <div class="card-body">
+                                            <h4 class="mb-3">Isquiotibiales y Glúteos</h4>
+                                            <img th:src="@{/images/tutorials/pesoMuertoTutorial/musculos_1.png}"
+                                                alt="Isquiotibiales y glúteos" class="img-fluid rounded mb-3">
+                                            <div class="mt-3">
+                                                <p><strong>Isquiotibiales:</strong> Al despegar la barra del suelo se
+                                                    alargan
+                                                    bajo tensión (fase excéntrica) y luego se contraen para ayudar a
+                                                    extender la
+                                                    cadera. Además actúan como "freno" en el descenso, controlando que
+                                                    la
+                                                    cadera
+                                                    no caiga de forma rápida.</p>
+                                                <p><strong>Glúteos:</strong> Desde la posición baja se contraen
+                                                    fuertemente
+                                                    para extender la cadera y llevar el tronco a posición erguida. Su
+                                                    máxima
+                                                    activación se produce justo antes de bloquear la cadera, cuando
+                                                    hombros
+                                                    y
+                                                    caderas se alinean.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Erectores Espinales -->
+                                <div class="col-md-6">
+                                    <div class="card border-0">
+                                        <div class="card-body">
+                                            <h4 class="mb-3">Erectores Espinales</h4>
+                                            <img th:src="@{/images/tutorials/pesoMuertoTutorial/musculos_2.png}"
+                                                alt="Erectores espinales" class="img-fluid rounded mb-3">
+                                            <p>Los erectores espinales se mantienen en contracción isométrica a lo largo
+                                                de
+                                                todo el movimiento, formando un "corsé" de soporte para la columna. Su
+                                                tensión
+                                                aumenta conforme el torso se inclina, evitando la flexión lumbar
+                                                (redondeo)
+                                                tanto
+                                                al iniciar el tirón como en la fase media del levantamiento.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Técnica del Peso Muerto Convencional -->
+                        <div class="exercise-card bg-white p-4 mt-4">
+                            <h3 class="text-danger mb-4">Técnica del Peso Muerto Convencional</h3>
+                            <div class="row g-4">
+
+                                <div class="col-12">
+                                    <div class="card border-0">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <span class="badge bg-danger p-2 me-3">1</span>
+                                                <h4 class="h5 mb-0">Preparación</h4>
+                                            </div>
+                                            <div class="text-center mb-3">
+                                                <img th:src="@{/images/tutorials/pesoMuertoTutorial/PMC_posicionInicial.png}"
+                                                    alt="Posición inicial convencional"
+                                                    class="img-fluid rounded shadow-sm">
+                                            </div>
+                                            <p>En primer lugar, acércate a la barra y coloca los pies de manera que
+                                                quede un
+                                                pequeño espacio entre tus tibias y la barra.</p>
+                                            <p>Para la mayoría de personas, se recomienda una separación ligeramente
+                                                menor
+                                                que
+                                                la anchura de los hombros. No obstante, existen variaciones
+                                                individualizadas.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Despegue -->
+                                <div class="col-12">
+                                    <div class="card border-0">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <span class="badge bg-danger p-2 me-3">2</span>
+                                                <h4 class="h5 mb-0">Despegue</h4>
+                                            </div>
+                                            <div class="text-center mb-3">
+                                                <img th:src="@{/images/tutorials/pesoMuertoTutorial/comparacionTecnicaPMC.png}"
+                                                    alt="Comparación técnica" class="img-fluid rounded shadow-sm">
+                                            </div>
+                                            <p>Agarra la barra manteniendo la columna neutra, sin bajar la mirada.</p>
+                                            <p>La posición de la espalda es fundamental, elegir entre una espalda más
+                                                curva
+                                                o
+                                                más plana dependerá del tipo de levantador que seas y de tus
+                                                características
+                                                físicas:</p>
+                                            <ul class="list-unstyled">
+                                                <li class="mb-2"><i
+                                                        class="bi bi-arrow-right-circle-fill text-danger me-2"></i>
+                                                    Si eres dominante de espalda, puedes optar por una posición más
+                                                    flexionada
+                                                    de la zona torácica (no de la zona lumbar).</li>
+                                                <li class="mb-2"><i
+                                                        class="bi bi-arrow-right-circle-fill text-danger me-2"></i>
+                                                    Al contrario, si eres dominante de piernas, lo más seguro es que
+                                                    intentes
+                                                    mantener una posición más perpendicular sacando más el pecho y con
+                                                    la
+                                                    mirada
+                                                    totalmente de frente, para así emplear más la fuerza de los
+                                                    cuádriceps.
+                                                </li>
+                                            </ul>
+                                            <p>Una vez determinado, realiza una inspiración diafragmática profunda y
+                                                mantén
+                                                el
+                                                pecho alto, aprieta la barra contra las tibias y empuja el suelo hacia
+                                                abajo
+                                                con
+                                                los pies.</p>
+                                            <p>Esto provocará un pequeño movimiento de cadera hacia abajo, que será más
+                                                o
+                                                menos
+                                                pronunciando en función de las proporciones corporales y dominancia de
+                                                cadena anterior
+                                                (más vertical, aunque no es una sentadilla) o posterior (más inclinado):
+                                            </p>
+                                            <ul class="list-unstyled">
+                                                <li class="mb-2"><i
+                                                        class="bi bi-arrow-right-circle-fill text-danger me-2"></i>
+                                                    Si tus brazos son largos en relación a tu tronco, tus caderas
+                                                    comenzarán
+                                                    más abajo.</li>
+                                                <li class="mb-2"><i
+                                                        class="bi bi-arrow-right-circle-fill text-danger me-2"></i>
+                                                    Si tu torso es largo en relación a los brazos y el fémur, tus
+                                                    caderas
+                                                    comenzarán más abajo.</li>
+                                                <li class="mb-2"><i
+                                                        class="bi bi-arrow-right-circle-fill text-danger me-2"></i>
+                                                    Si tus fémures son largos en relación al torso, entonces tus caderas
+                                                    comenzarán más arriba.</li>
+                                                <li class="mb-2"><i
+                                                        class="bi bi-arrow-right-circle-fill text-danger me-2"></i>
+                                                    Y si tus tibias son largas en relación al fémur, tus caderas
+                                                    comenzarán
+                                                    más arriba.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Fase Concéntrica -->
+                                <div class="col-md-6">
+                                    <div class="card border-0">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <span class="badge bg-danger p-2 me-3">3</span>
+                                                <h4 class="h5 mb-0">Fase Concéntrica</h4>
+                                            </div>
+                                            <img th:src="@{/images/tutorials/pesoMuertoTutorial/faseConcentricaPMC.jpg}"
+                                                alt="Fase concéntrica" class="img-fluid rounded mb-3">
+                                            <p>Escucha la orden del juez para que puedas empezar.</p>
+                                            <p>La cadera y las rodillas se extienden a la vez, en un movimiento
+                                                coordinado y
+                                                sincronizado, fluido, mientras se mantiene la espalda en ese rango de
+                                                neutralidad
+                                                seleccionando.</p>
+                                            <p>A medida que la barra llega a las rodillas, los momentos externos de
+                                                fuerza
+                                                se
+                                                hacen mayores (desventaja mecánica), nos acercamos al sticking point. En
+                                                este punto
+                                                crítico es fundamental seguir manteniendo la barra pegada a las piernas.
+                                            </p>
+                                            <p>Busca un golpe fuerte de cadera contra la barra para completar el
+                                                movimiento
+                                                (extensión de cadera + retroversión pélvica).</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Bloqueo -->
+                                <div class="col-md-6">
+                                    <div class="card border-0">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <span class="badge bg-danger p-2 me-3">4</span>
+                                                <h4 class="h5 mb-0">Bloqueo</h4>
+                                            </div>
+                                            <img th:src="@{/images/tutorials/pesoMuertoTutorial/bloqueoPMC.png}"
+                                                alt="Bloqueo" class="img-fluid rounded mb-3">
+                                            <p>Después de la extensión de cadera, la barra debería quedar pegada a los
+                                                muslos,
+                                                más o menos en la mitad superior de estos, con los glúteos apretados y
+                                                en
+                                                retroversión pélvica.</p>
+                                            <p>En ese punto, harás una pausa hasta que el juez de la señal de que puedes
+                                                soltar la barra.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Peso Muerto Sumo -->
+                    <div class="tab-pane fade" id="sumo" role="tabpanel">
+                        <div class="exercise-card p-4">
+                            <h3 class="text-danger mb-4">Músculos Principales</h3>
+                            <div class="row g-4">
+                                <!-- Abductores y Aductores -->
+                                <div class="col-md-6">
+                                    <div class="card border-0">
+                                        <div class="card-body">
+                                            <h4 class="mb-3">Abductores y Aductores</h4>
+                                            <img th:src="@{/images/tutorials/pesoMuertoTutorial/aductoresAbductores.png}"
+                                                alt="Abductores y aductores" class="img-fluid rounded mb-3">
+                                            <div class="mt-3">
+                                                <p><strong>Abductores:</strong> Mantienen las caderas alineadas y evitan
+                                                    que las rodillas se desvíen hacia dentro durante el tirón. Trabajan
+                                                    en
+                                                    contracción isométrica para "separar" y estabilizar la articulación
+                                                    de
+                                                    la
+                                                    cadera en la posición amplia.</p>
+                                                <p><strong>Aductores:</strong> Aportan potencia al tirar ayudando a
+                                                    acercar
+                                                    las piernas al centro al iniciar el levantamiento y generando fuerza
+                                                    de
+                                                    empuje contra la plataforma.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Cuádriceps -->
+                                <div class="col-md-6">
+                                    <div class="card border-0">
+                                        <div class="card-body">
+                                            <h4 class="mb-3">Cuádriceps</h4>
+                                            <img th:src="@{/images/tutorials/pesoMuertoTutorial/cuadriceps.png}"
+                                                alt="Cuádriceps" class="img-fluid rounded mb-3">
+                                            <p><strong>Cuádriceps:</strong> A diferencia del peso muerto convencional,
+                                                en el
+                                                sumo hay un mayor reclutamiento de los extensores de rodilla. Participan
+                                                activamente al extender la rodilla al comienzo del movimiento,
+                                                especialmente
+                                                durante los primeros 10-20 cm.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Técnica del Peso Muerto Sumo -->
+                        <div class="exercise-card p-4 mt-4">
+                            <h3 class="text-danger mb-4">Técnica del Peso Muerto Sumo</h3>
+                            <div class="row g-4">
+
+                                <div class="col-12">
+                                    <div class="card border-0">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <span class="badge bg-danger p-2 me-3">1</span>
+                                                <h4 class="h5 mb-0">Preparación</h4>
+                                            </div>
+                                            <div class="text-center mb-3">
+                                                <img th:src="@{/images/tutorials/pesoMuertoTutorial/PMS_PosicicionInicial.png}"
+                                                    alt="Posición inicial sumo" class="img-fluid rounded shadow-sm">
+                                            </div>
+                                            <p>En primer lugar, acércate a la barra y busca la separación idónea de
+                                                piernas
+                                                y la angulación de los pies teniendo en cuenta el moleteado de la barra
+                                            </p>
+                                            <p>La barra deberá de quedar a la altura de la <strong>mitad del
+                                                    pie</strong> y
+                                                según el tipo de angulación de los pies se involucrarán más diferentes
+                                                grupos musculares.
+                                                En el caso de que se abran más las punteras, se involucrará más glúteos
+                                                y
+                                                aductores,
+                                                y si se cierran las punteras, se involucrará mas cuadriceps e isquios.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="card border-0">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <span class="badge bg-danger p-2 me-3">2</span>
+                                                <h4 class="h5 mb-0">Despegue</h4>
+                                            </div>
+                                            <img th:src="@{/images/tutorials/pesoMuertoTutorial/despeguePMS.jpg}"
+                                                alt="Ejecución sumo" class="img-fluid rounded mb-3">
+                                        </div>
+                                        <p>Espera a la orden del juez para empezar el movimiento.</p>
+                                        <p>Elige el tipo de agarre que vas a utilizar, realiza una <strong>inspiracion
+                                                diafragmática profunda</strong> y agáchate para agarrar la barra con la
+                                            espalda
+                                            lo más <strong>perpendicular</strong> posible con la mirada
+                                            <strong>totalmente
+                                                de frente</strong>.
+                                        </p>
+                                        <p>Empuja con fuerza y rapidez el suelo hacia abajo y hacia afuera con los pies.
+                                            Esta es una de las principales diferencias con el peso muerto convencional;
+                                            y es
+                                            que, especialmente con una postura sumo muy amplia, se crean fuerzas
+                                            verticales
+                                            (empujar el suelo hacia abajo) y laterales (deslizar el suelo hacia los
+                                            lados)
+                                            con las piernas y las caderas.</p>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="card border-0">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <span class="badge bg-danger p-2 me-3">3</span>
+                                                <h4 class="h5 mb-0">Bloqueo</h4>
+                                            </div>
+                                            <img th:src="@{/images/tutorials/pesoMuertoTutorial/bloqueoPMS.jpg}"
+                                                class="img-fluid rounded mb-3">
+                                            <p>El peso muerto sumo se diferencia también respecto al convencional en que
+                                                el
+                                                bloqueo se realiza en <strong>2 fases</strong>:
+                                            <ol class="">
+                                                <li>Rodillas</li>
+                                                <li>Cadera</li>
+                                            </ol>
+                                            </p>
+                                            <p>Busca primero el bloqueo de las <strong>rodillas</strong> y una vez que
+                                                lo
+                                                consigas, empuja la <strong>cadera</strong> hacia delante para finalizar
+                                                el
+                                                movimiento. En este punto, realiza una pausa de 1-2 segundos hasta que
+                                                el
+                                                juez te de la orden de soltar la barra.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Anular Movimiento -->
+            <div class="exercise-card p-4 mt-4">
+                <h3 class="text-danger mb-4">Causas de Anulación</h3>
+                <div class="card p-4 border-0">
+                    <div class="card border-0 bg-danger p-3 mb-4">
+                        <div class="card-body text-white text-center">
+                            <p class="lead mb-0">Un intento de peso muerto puede ser declarado nulo por los siguientes
+                                motivos</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card border-danger h-100 shadow-sm">
+                                <div class="card-header bg-danger text-white">
+                                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                    Errores de Ejecución
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="d-flex align-items-start mb-3 p-2 rounded hover-bg-light">
+                                            <i class="bi bi-x-circle-fill text-danger me-2 mt-1"></i>
+                                            <div>
+                                                <strong>No seguir las señales del juez</strong>
+                                                <p class="mb-0 text-muted">Iniciar o finalizar sin esperar las
+                                                    órdenes
+                                                </p>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex align-items-start mb-3 p-2 rounded hover-bg-light">
+                                            <i class="bi bi-x-circle-fill text-danger me-2 mt-1"></i>
+                                            <div>
+                                                <strong>No estar completamente erguido al finalizar el
+                                                    levantamiento</strong>
+                                                <p class="mb-0 text-muted">El levantador debe estar completamente erguido
+                                                    con los hombros hacia atrás y las rodillas bloqueadas al completar el levantamiento.
+                                                </p>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex align-items-start mb-3 p-2 rounded hover-bg-light">
+                                            <i class="bi bi-x-circle-fill text-danger me-2 mt-1"></i>
+                                            <div>
+                                                <strong>Movimiento descendente de la barra</strong>
+                                                <p class="mb-0 text-muted">Cualquier descenso de la barra antes de alcanzar
+                                                    la posición final erguida invalida el intento.
+                                                </p>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex align-items-start mb-3 p-2 rounded hover-bg-light">
+                                            <i class="bi bi-x-circle-fill text-danger me-2 mt-1"></i>
+                                            <div>
+                                                <strong>Apoyar la barra en los muslos</strong>
+                                                <p class="mb-0 text-muted">Durante la ejecución, no se permite que la barra
+                                                    se apoye o descanse sobre los muslos
+                                                </p>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex align-items-start mb-3 p-2 rounded hover-bg-light">
+                                            <i class="bi bi-x-circle-fill text-danger me-2 mt-1"></i>
+                                            <div>
+                                                <strong>Soltar la barra</strong>
+                                                <p class="mb-0 text-muted">El levantador debe mantener el control de la
+                                                    barra con ambas manos al devolverla al suelo. Soltarla antes de que
+                                                    toque la plataforma anula el intento.
+                                                </p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

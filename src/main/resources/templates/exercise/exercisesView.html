@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Crear y Ver Ejercicios</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/css/exercisesView.css}" />
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="content">
+            <!-- Navbar con logo centrado -->
+            <nav class="navbar navbar-dark bg-black">
+                <div class="container-fluid d-flex justify-content-between align-items-center">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <span class="navbar-brand mx-auto h4 mb-0">EJERCICIOS</span>
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="btn btn-outline-danger">
+                            <i class="bi bi-box-arrow-left"></i>
+                        </button>
+                    </form>
+                </div>
+            </nav>
+
+            <!-- Offcanvas menu -->
+            <div class="offcanvas offcanvas-start bg-black" tabindex="-1" id="offcanvasMenu"
+                aria-labelledby="offcanvasMenuLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title text-white" id="offcanvasMenuLabel">GraFit</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                        aria-label="Cerrar"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2">
+                            <a class="nav-link text-white" th:href="@{/home}">
+                                <i class="bi bi-house-fill me-2"></i>Inicio
+                            </a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a class="nav-link text-white" th:href="@{/profile}">
+                                <i class="bi bi-person-fill me-2"></i>Datos del Atleta
+                            </a>
+                        </li>
+                        <li class="nav-item mt-3 mb-1">
+                            <h6 class="text-danger text-uppercase fw-bold small">
+                                <i class="bi bi-lightning-fill me-2"></i>Ejercicios
+                            </h6>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link ps-3 text-white active" th:href="@{/exercises}">
+                                <i class="bi bi-plus-circle me-2"></i>Crear y Mostrar Ejercicios
+                            </a>
+                        </li>
+                        <li class="nav-item mt-3 mb-1">
+                            <h6 class="text-danger text-uppercase fw-bold small">
+                                <i class="bi bi-calendar-check-fill me-2"></i>Rutinas
+                            </h6>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link ps-3 text-white" th:href="@{/routines}">
+                                <i class="bi bi-plus-circle me-2"></i>Crear y Mostrar Rutinas
+                            </a>
+                        </li>
+                        <li class="nav-item mt-3 mb-1">
+                            <h6 class="text-danger text-uppercase fw-bold small">
+                                <i class="bi bi-graph-up me-2"></i>Estadísticas
+                            </h6>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link ps-3 text-white" th:href="@{/statistics}">
+                                <i class="bi bi-book-fill me-2"></i>Ver Progreso
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link ps-3 text-white active" th:href="@{/statistics/summary}">
+                                <i class="bi bi-book-fill me-2"></i>Resumen
+                            </a>
+                        </li>
+                        <li class="nav-item mt-3 mb-1">
+                            <h6 class="text-danger text-uppercase fw-bold small">
+                                <i class="bi bi-book-fill me-2"></i>Aprender
+                            </h6>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link ps-3 text-white" data-bs-toggle="collapse" href="#collapseAprender">
+                                <i class="bi bi-plus-circle me-2"></i>Tutoriales
+                            </a>
+                            <div class="collapse ms-3" id="collapseAprender">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" th:href="@{/tutorials/press-banca}">
+                                            <i class="bi bi-arrow-right me-2"></i>Press Banca
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" th:href="@{/tutorials/peso-muerto}">
+                                            <i class="bi bi-arrow-right me-2"></i>Peso Muerto
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" th:href="@{/tutorials/sentadilla}">
+                                            <i class="bi bi-arrow-right me-2"></i>Sentadilla
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" th:href="@{/tutorials/custom}">
+                                            <i class="bi bi-arrow-right me-2"></i>Personalizado
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="container-fluid mt-4">
+                <div class="row g-4">
+
+                    <section class="col-12 col-lg-4">
+                        <div th:if="${errorMessage}" class="alert alert-danger text-center" role="alert">
+                            <p th:text="${errorMessage}"></p>
+                        </div>
+                        <div th:if="${successMessage}" class="alert alert-success text-center" role="alert">
+                            <p th:text="${successMessage}"></p>
+                        </div>
+
+                        <form th:action="@{/exercises}" th:object="${exercise}" method="post" class="needs-validation"
+                            novalidate>
+                            <input type="hidden" th:field="*{idExercise}" />
+
+                            <div class="mb-4">
+                                <label for="name" class="form-label">Nombre *</label>
+                                <div class="input-group has-validation">
+                                    <span class="input-group-text"><i class="bi bi-fonts"></i></span>
+                                    <input type="text" th:field="*{name}" class="form-control" id="name" required />
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}"
+                                        th:errors="*{name}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="description" class="form-label">Descripción</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-card-text"></i></span>
+                                    <input type="text" th:field="*{description}" class="form-control"
+                                        id="description" />
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}"
+                                        th:errors="*{description}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-5">
+                                <label for="muscleGroup" class="form-label">Grupo Muscular *</label>
+                                <select class="form-select" id="muscleGroup" th:field="*{muscleGroup}" required>
+                                    <option value="" disabled selected>Seleccione un grupo muscular</option>
+                                    <option value="PECHO">Pecho</option>
+                                    <option value="ESPALDA">Espalda</option>
+                                    <option value="HOMBROS">Hombros</option>
+                                    <option value="BRAZOS">Brazos</option>
+                                    <option value="PIERNAS">Piernas</option>
+                                </select>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('muscleGroup')}"
+                                    th:errors="*{muscleGroup}">
+                                </div>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button th:if="${exercise.idExercise == null}" type="submit"
+                                    class="btn btn-danger btn-lg shadow-sm">
+                                    Crear
+                                </button>
+
+                                <div th:if="${exercise.idExercise != null}" class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-danger btn-lg shadow-sm" title="Guardar">
+                                        Guardar
+                                    </button>
+                                    <a href="/exercises" class="btn btn-dark btn-lg shadow-sm" title="Cancelar">
+                                        Cancelar
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </section>
+
+                    <section class="col-12 col-lg-8">
+                        <div class="card shadow-sm p-4 h-100">
+                            <div th:if="${exercises.isEmpty()}" class="text-center text-muted mb-3">
+                                <p>No tienes ejercicios creados aún.</p>
+                            </div>
+
+                            <div th:if="${!exercises.isEmpty()}">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-sm align-middle mb-0">
+                                        <thead style="background-color: #dc3545; color: white;">
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Descripción</th>
+                                                <th>Grupo Muscular</th>
+                                                <th>Fecha de Creación</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="ex : ${exercises}" style="border-bottom: 1px solid #f1f1f1;">
+                                                <td th:text="${ex.name}"></td>
+                                                <td th:text="${ex.description ?: '-'}"></td>
+                                                <td th:text="${ex.muscleGroup?.toUpperCase() ?: '-'}"></td>
+                                                <td
+                                                    th:text="${ex.creationDate != null ? #temporals.format(ex.creationDate, 'dd/MM/yyyy') : '-'}">
+                                                </td>
+                                                <td class="d-flex gap-1">
+                                                    <a th:href="@{/exercises(edit=${ex.idExercise})}" class="btn btn-sm"
+                                                        style="background-color: #dc3545; color: white;" title="Editar">
+                                                        <i class="bi bi-pencil-fill"></i>
+                                                    </a>
+                                                    <form th:action="@{/exercises/{id}/delete(id=${ex.idExercise})}"
+                                                        method="post" class="d-inline"
+                                                        onsubmit="return confirm('¿Eliminar ejercicio?');">
+                                                        <button type="submit" class="btn btn-sm"
+                                                            style="background-color: #dc3545; color: white;"
+                                                            title="Eliminar">
+                                                            <i class="bi bi-trash-fill"></i>
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/exercisesView.js}"></script>
+</body>
+
+</html>
