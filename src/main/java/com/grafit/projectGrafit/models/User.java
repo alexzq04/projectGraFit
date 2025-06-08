@@ -40,8 +40,10 @@ public class User {
     private String surname1;
 
     @Size(max = 50, message = "El segundo apellido no puede tener más de 50 caracteres")
-    @Pattern(regexp = "^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?:[- ][A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)?$", 
-            message = "El segundo apellido debe empezar con mayúscula y el resto en minúsculas. Puede ser compuesto con guion o espacio")
+    @Pattern(
+        regexp = "^$|^[A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ\\- ]*$",
+        message = "El segundo apellido debe empezar con mayúscula y el resto en minúsculas. Puede ser compuesto con guion o espacio"
+    )
     private String surname2;
 
     @NotBlank(message = "El nombre de usuario es obligatorio")
@@ -70,13 +72,12 @@ public class User {
     @Column(name = "role", length = 10)
     private Role role = Role.USER;
 
-    @Min(value = 50, message = "La altura debe ser al menos 0.5 metros")
-    @Max(value = 300, message = "La altura no puede ser mayor a 3 metros")
-    private float heightMeters;
+    @DecimalMin(value = "1.0", message = "La altura debe ser al menos 1 metro")
+    private Double heightMeters;  // Ya está correcto como Double
 
     @Min(value = 20, message = "El peso debe ser al menos 20 kg")
     @Max(value = 300, message = "El peso no puede ser mayor a 300 kg")
-    private float weightKg;
+    private Double weightKg;  // Cambiar de float a Double para consistencia
 
     @Transient
     private float imc;
@@ -161,9 +162,9 @@ public class User {
             String phone,
             Gender gender,
             Role role,
-            float height,
+            Double height,
             HeightUnit heightUnit,
-            float weight,
+            Double weight,
             WeightUnit weightUnit) {
         this.name = name;
         this.surname1 = surname1;
@@ -210,9 +211,9 @@ public class User {
             String phone,
             Gender gender,
             Role role,
-            float height,
+            Double height,
             HeightUnit heightUnit,
-            float weight,
+            Double weight,
             WeightUnit weightUnit,
             LocalDate dateOfRegister) {
         this(name, surname1, surname2, username, email, password, phone, gender, role, height, heightUnit, weight,
@@ -396,7 +397,7 @@ public class User {
      * Obtiene la altura del usuario en metros.
      * @return La altura en metros
      */
-    public float getHeightMeters() {
+    public double getHeightMeters() {
         return heightMeters;
     }
 
@@ -404,15 +405,15 @@ public class User {
      * Obtiene la altura del usuario en pies.
      * @return La altura en pies
      */
-    public float getHeightInFeet() {
-        return heightMeters * 3.28084f;
+    public Double getHeightInFeet() {
+        return heightMeters * 3.28084;
     }
 
     /**
      * Obtiene el peso del usuario en kilogramos.
      * @return El peso en kilogramos
      */
-    public float getWeightKg() {
+    public double getWeightKg() {
         return weightKg;
     }
 
@@ -420,8 +421,8 @@ public class User {
      * Obtiene el peso del usuario en libras.
      * @return El peso en libras
      */
-    public float getWeightInLbs() {
-        return weightKg * 2.20462f;
+    public Double getWeightInLbs() {
+        return weightKg * 2.20462;
     }
 
     /**
@@ -453,7 +454,7 @@ public class User {
      * Establece la altura del usuario en metros.
      * @param heightMeters La altura en metros a establecer
      */
-    public void setHeightMeters(float heightMeters) {
+    public void setHeightMeters(Double heightMeters) {
         this.heightMeters = heightMeters;
         calcularImc();
     }
@@ -462,7 +463,7 @@ public class User {
      * Establece el peso del usuario en kilogramos.
      * @param weightKg El peso en kilogramos a establecer
      */
-    public void setWeightKg(float weightKg) {
+    public void setWeightKg(Double weightKg) {
         this.weightKg = weightKg;
         calcularImc();
     }
@@ -472,8 +473,8 @@ public class User {
      * @param height La altura a establecer
      * @param unit La unidad de medida (METERS o FEET)
      */
-    public void setHeight(float height, HeightUnit unit) {
-        this.heightMeters = (unit == HeightUnit.FEET) ? height / 3.28084f : height;
+    public void setHeight(Double height, HeightUnit unit) {
+        this.heightMeters = (unit == HeightUnit.FEET) ? height / 3.28084 : height;
         calcularImc();
     }
 
@@ -482,8 +483,8 @@ public class User {
      * @param weight El peso a establecer
      * @param unit La unidad de medida (KG o LBS)
      */
-    public void setWeight(float weight, WeightUnit unit) {
-        this.weightKg = (unit == WeightUnit.LBS) ? weight / 2.20462f : weight;
+    public void setWeight(Double weight, WeightUnit unit) {
+        this.weightKg = (unit == WeightUnit.LBS) ? weight / 2.20462 : weight;
         calcularImc();
     }
 
@@ -491,8 +492,8 @@ public class User {
      * Calcula el IMC del usuario basado en su peso y altura actuales.
      */
     private void calcularImc() {
-        if (heightMeters > 0) {
-            this.imc = weightKg / (heightMeters * heightMeters);
+        if (heightMeters != null && heightMeters > 0 && weightKg != null) {
+            this.imc = (float) (weightKg / (heightMeters * heightMeters));
         } else {
             this.imc = 0;
         }

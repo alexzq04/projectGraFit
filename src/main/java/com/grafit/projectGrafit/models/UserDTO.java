@@ -42,8 +42,8 @@ public class UserDTO {
     private Gender gender;
 
     @NotNull(message = "La altura es obligatoria")
-    @DecimalMin(value = "0.1", message = "Altura mínima 0.1")
-    private Float height;
+    @DecimalMin(value = "1.0", message = "La altura debe ser al menos 1 metro")
+    private Double height; // Change from Float to Double
 
     @NotNull(message = "La unidad de altura es obligatoria")
     private HeightUnit heightUnit;
@@ -233,7 +233,7 @@ public class UserDTO {
      * Obtiene la altura del usuario.
      * @return La altura del usuario
      */
-    public Float getHeight() {
+    public Double getHeight() {
         return height;
     }
 
@@ -241,7 +241,7 @@ public class UserDTO {
      * Establece la altura del usuario.
      * @param height La altura a establecer
      */
-    public void setHeight(Float height) {
+    public void setHeight(Double height) {
         this.height = height;
     }
 
@@ -302,18 +302,32 @@ public class UserDTO {
      */
     public User toUserEntity() {
         return new User(
-                name,
-                surname1,
-                surname2,
-                username,
-                email,
-                password,
-                phone,
-                gender,
-                null,
-                height,
-                heightUnit,
-                weight,
-                weightUnit);
+            name,
+            surname1,
+            surname2,
+            username,
+            email,
+            password,
+            phone,
+            gender,
+            null,  // Role will be set by service layer
+            height,
+            heightUnit,
+            weight != null ? weight.doubleValue() : 0.0,  // Convert Float to Double
+            weightUnit
+        );
+    }
+
+    /**
+     * Obtiene la altura en metros.
+     * Este método convierte la altura a metros si la unidad actual es centímetros.
+     * @return La altura en metros, o null si la altura no está definida
+     */
+    public Double getHeightMeters() {
+        if (height == null) return null;
+        
+        return heightUnit == HeightUnit.METERS ? 
+            height.doubleValue() : 
+            height.doubleValue() / 100.0; // Convertir de cm a metros
     }
 }

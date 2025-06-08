@@ -1,6 +1,0 @@
--- 1. Crear la base de datos
-CREATE DATABASE IF NOT EXISTS grafit CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER IF NOT EXISTS 'grafit'@'localhost' IDENTIFIED BY 'grafitpass';
-GRANT ALL PRIVILEGES ON grafit.* TO 'grafit'@'localhost';
-FLUSH PRIVILEGES;
-

@@ -210,10 +210,12 @@
                                         <!-- Altura -->
                                         <div class="mb-3">
                                             <label for="height" class="form-label">Altura *</label>
-                                            <input type="number" step="0.01" min="1" th:field="*{height}"
-                                                class="form-control"
-                                                th:class="${#fields.hasErrors('height')} ? 'form-control is-invalid' : 'form-control'"
-                                                id="height" placeholder="Altura" required />
+                                            <div class="form-floating">
+                                                <input type="number" th:field="*{height}" class="form-control"
+                                                    th:class="${#fields.hasErrors('height')} ? 'form-control is-invalid' : 'form-control'"
+                                                    id="height" placeholder="Altura" step="0.01" min="1" required />
+                                                <label for="height">Altura</label>
+                                            </div>
                                             <div class="invalid-feedback" th:if="${#fields.hasErrors('height')}"
                                                 th:errors="*{height}">
                                                 Error en altura
@@ -224,13 +226,16 @@
                                         <!-- Unidad de Altura -->
                                         <div class="mb-3">
                                             <label for="heightUnit" class="form-label">Unidad *</label>
-                                            <select th:field="*{heightUnit}" class="form-select"
-                                                th:class="${#fields.hasErrors('heightUnit')} ? 'form-select is-invalid' : 'form-select'"
-                                                id="heightUnit" required>
-                                                <option value="" disabled selected>Selecciona</option>
-                                                <option th:value="METERS">metros (m)</option>
-                                                <option th:value="FEET">pies (ft)</option>
-                                            </select>
+                                            <div class="form-floating">
+                                                <select th:field="*{heightUnit}" class="form-select"
+                                                    th:class="${#fields.hasErrors('heightUnit')} ? 'form-select is-invalid' : 'form-select'"
+                                                    id="heightUnit" required>
+                                                    <option value="" disabled selected>Selecciona</option>
+                                                    <option th:value="METERS">metros (m)</option>
+                                                    <option th:value="FEET">pies (ft)</option>
+                                                </select>
+                                                <label for="heightUnit">Unidad de altura</label>
+                                            </div>
                                             <div class="invalid-feedback" th:if="${#fields.hasErrors('heightUnit')}"
                                                 th:errors="*{heightUnit}">Error en unidad</div>
                                         </div>

@@ -15,7 +15,6 @@ import com.grafit.projectGrafit.repositories.UserRepository;
  * Servicio que gestiona las operaciones relacionadas con los usuarios.
  */
 @Service
-@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -42,6 +41,7 @@ public class UserService {
      * @return el usuario creado y guardado
      * @throws IllegalArgumentException si el nombre de usuario o correo ya existen
      */
+    @Transactional
     public User createUserFromDto(UserDTO dto) {
         // Verificar si el nombre de usuario ya existe
         if (userRepository.existsByUsername(dto.getUsername())) {
@@ -51,6 +51,20 @@ public class UserService {
         // Verificar si el email ya existe
         if (userRepository.existsByEmail(dto.getEmail())) {
             throw new IllegalArgumentException("El correo electrónico '" + dto.getEmail() + "' ya está registrado");
+        }
+
+        // Validación de altura
+        Double heightMeters = dto.getHeightMeters();
+        if (heightMeters == null || heightMeters < 1.0) {
+            throw new IllegalArgumentException("La altura debe ser al menos 1 metro");
+        }
+
+        // Validación de segundo apellido si está presente
+        if (dto.getSurname2() != null && !dto.getSurname2().isEmpty()) {
+            String pattern = "^[A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ\\- ]*$";
+            if (!dto.getSurname2().matches(pattern)) {
+                throw new IllegalArgumentException("Formato de segundo apellido inválido");
+            }
         }
 
         // Crear y guardar el usuario
